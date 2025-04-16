@@ -4,7 +4,23 @@
   gap: 24px;
 }
 
+/* info */
+.info_container {
+  padding: 28px 40px;
+  border-radius: 20px;
+  background-color: var(--color-grey-scale-0);
+
+  color: var(--color-grey-scale-90);
+  font: var(--text-md);
+}
+
+.strong {
+  color: var(--color-primary-blue);
+  font: var(--text-md-emphasis);
+}
+
 /* table */
+
 .view_container {
   padding: 28px 40px;
   border-radius: 20px;
@@ -13,7 +29,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 3fr 7.5fr 1.5fr 2fr 4fr 1.5fr 1.5fr 2.5fr;
+  grid-template-columns: 3fr 7.5fr 1.5fr 2fr 4fr 2fr;
 }
 
 .row:last-child .cell {

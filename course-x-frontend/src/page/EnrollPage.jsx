@@ -16,7 +16,7 @@ export default function EnrollPage() {
   return (
     <section className={style.container}>
       <Searchbar />
-      <div className={style.enroll_container}>
+      <div className={style.view_container}>
         <div className={`${style.row} ${style.header}`}>
           <div className={style.cell}>과목번호</div>
           <div className={style.cell}>과목명</div>

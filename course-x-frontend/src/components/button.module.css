@@ -6,4 +6,10 @@
   color: var(--color-grey-scale-transparent-2);
   font: var(--text-sm);
   cursor: pointer;
+  transition: 200ms all ease;
+}
+
+.button:hover {
+  color: var(--color-grey-scale-0);
+  filter: brightness(1.1);
 }
