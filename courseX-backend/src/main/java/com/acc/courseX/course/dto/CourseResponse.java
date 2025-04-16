@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record CourseResponse(
+    @NotNull Long courseId,
     @NotNull String code,
     @NotNull String name,
     @Min(1) int credit,
@@ -12,6 +13,7 @@ public record CourseResponse(
     @Min(1) int maxStudent,
     @Min(0) int remainingSeats) {
   public static CourseResponse of(
+      Long courseId,
       String code,
       String name,
       int credit,
@@ -20,6 +22,6 @@ public record CourseResponse(
       int maxStudent,
       int remainingSeats) {
     return new CourseResponse(
-        code, name, credit, professorName, courseSchedule, maxStudent, remainingSeats);
+        courseId, code, name, credit, professorName, courseSchedule, maxStudent, remainingSeats);
   }
 }

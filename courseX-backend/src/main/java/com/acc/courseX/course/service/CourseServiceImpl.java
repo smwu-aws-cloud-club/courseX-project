@@ -28,6 +28,7 @@ public class CourseServiceImpl implements CourseService {
         .map(
             course ->
                 CourseResponse.of(
+                    course.getId(),
                     course.getCode(),
                     course.getName(),
                     course.getCredit(),
