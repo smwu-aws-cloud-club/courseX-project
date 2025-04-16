@@ -21,7 +21,8 @@ jobs:
       - name: resources 폴더 내 파일 생성
         run: |
           mkdir -p courseX-backend/src/main/resources/env
-	  echo "${{ secrets.ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
+          echo "${{ secrets.ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
+          
       - name: build
         run: |
           chmod +x gradlew
