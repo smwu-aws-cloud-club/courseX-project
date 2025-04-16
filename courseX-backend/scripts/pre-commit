@@ -6,25 +6,32 @@ set -e
 GIT_ROOT=$(git rev-parse --show-toplevel)
 BACKEND_DIR="$GIT_ROOT/courseX-backend"
 
-echo "[hook] Moving to backend directory: $BACKEND_DIR"
-cd "$BACKEND_DIR"
+# spotless 적용 전에 변경 파일 추적
+cd "$GIT_ROOT"
+echo "[hook] Capturing modified files before spotlessApply..."
+PRE_MODIFIED_FILES=$(git diff --name-only)
 
 # spotless 적용
+echo "[hook] Moving to backend directory: $BACKEND_DIR"
+cd "$BACKEND_DIR"
 echo "[hook] Running spotlessApply..."
 ./gradlew spotlessApply
 
-# 수정된 파일 목록
+# spotless 후 다시 Git 루트로 이동
+cd "$GIT_ROOT"
+
+# spotless 이후 변경된 파일 확인
 MODIFIED_FILES=$(git diff --name-only)
 
 echo "[hook] Files modified by spotless:"
 echo "$MODIFIED_FILES"
 
-# 다시 git add
+# git add 수행
 for file in $MODIFIED_FILES; do
-  # 'courseX-backend/' 부분을 제거하여 상대 경로 계산
-  RELATIVE_PATH="${file#"$BACKEND_DIR/"}"
-  git add "$RELATIVE_PATH"
-  echo "[hook] Re-added: $RELATIVE_PATH"
+  if [ -f "$file" ]; then
+    git add "$file"
+    echo "[hook] Re-added: ${file}"
+  fi
 done
 
 echo "[hook] Pre-commit hook completed successfully."
