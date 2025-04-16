@@ -40,4 +40,9 @@ public class CourseSchedule {
 
   @Column(nullable = false)
   private LocalTime endTime;
+
+  @Override
+  public String toString() {
+    return weekday.getDisplayName() + ": " + startTime + " - " + endTime;
+  }
 }
