@@ -32,6 +32,7 @@ public class CourseSchedule {
   private Course course;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private Weekday weekday;
 
   @Column(nullable = false)
