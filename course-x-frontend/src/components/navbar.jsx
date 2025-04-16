@@ -29,7 +29,11 @@ export default function Navbar() {
       </h1>
       <nav className={style.nav}>
         {NAV.map(({ to, Icon, text }) => (
-          <Link key={to} to={to} className={`${focus(to) && style.focus}`}>
+          <Link
+            key={`nav-${to}`}
+            to={to}
+            className={`${focus(to) && style.focus}`}
+          >
             <Icon fillOpacity={focus(to) ? 1 : 0.7} />
             <span>{text}</span>
           </Link>
