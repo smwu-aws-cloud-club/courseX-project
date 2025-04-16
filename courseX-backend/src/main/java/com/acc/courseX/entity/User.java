@@ -15,11 +15,13 @@ import jakarta.persistence.Table;
 import com.acc.courseX.entity.enums.Role;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class User extends BaseTime {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
