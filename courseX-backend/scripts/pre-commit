@@ -1,22 +1,33 @@
 #!/bin/sh
 
-PROJECT_ROOT=$(git rev-parse --show-toplevel)
+set -e
 
-# Part 1
-stagedFiles=$(git diff --staged --name-only)
+# Git 루트와 백엔드 디렉토리
+GIT_ROOT=$(git rev-parse --show-toplevel)
+BACKEND_DIR="$GIT_ROOT/courseX-backend"
 
-# Part 2
-echo "Running spotlessApply. Formatting code..."
-cd $PROJECT_ROOT && cd courseX-backend && ./gradlew spotlessApply
+echo "[hook] Moving to backend directory: $BACKEND_DIR"
+cd "$BACKEND_DIR"
 
-if [ $? -ne 0 ]; then
-    echo "Spotless apply failed!"
-    exit 1
-fi
+# spotless 적용
+echo "[hook] Running spotlessApply..."
+./gradlew spotlessApply
 
-# Part 3
-for file in $stagedFiles; do
-    if test -f "$file"; then
-        git add $file
-    fi
+# 수정된 파일 목록
+MODIFIED_FILES=$(git diff --name-only)
+
+echo "[hook] Files modified by spotless:"
+echo "$MODIFIED_FILES"
+
+# 다시 git add
+for file in $MODIFIED_FILES; do
+  # 'courseX-backend/' 부분을 제거하여 상대 경로 계산
+  RELATIVE_PATH="${file#"$BACKEND_DIR/"}"
+
+  if [ -f "$BACKEND_DIR/$file" ]; then
+    git add "$RELATIVE_PATH"
+    echo "[hook] Re-added: $RELATIVE_PATH"
+  fi
 done
+
+echo "[hook] Pre-commit hook completed successfully."
