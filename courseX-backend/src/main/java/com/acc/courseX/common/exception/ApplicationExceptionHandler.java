@@ -14,6 +14,6 @@ public class ApplicationExceptionHandler {
   @ExceptionHandler(BaseException.class)
   ResponseEntity<BaseResponse<?>> handleBusinessException(final BaseException e) {
     log.error(e.getError().getMessage());
-    return ResponseUtil.failure(e.getError(), BaseResponse.ofFailure(e.getError()));
+    return ResponseUtil.failure(e.getError());
   }
 }

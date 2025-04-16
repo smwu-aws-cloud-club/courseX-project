@@ -44,10 +44,6 @@ public final class ResponseUtil {
         .body(BaseResponse.ofSuccess(code, data));
   }
 
-  public static <T> ResponseEntity<BaseResponse<?>> failure(FailureCode code, T data) {
-    return ResponseEntity.status(code.getStatus()).body(BaseResponse.ofFailure(code, data));
-  }
-
   public static ResponseEntity<BaseResponse<?>> failure(FailureCode code) {
     return ResponseEntity.status(code.getStatus()).body(BaseResponse.ofFailure(code));
   }
