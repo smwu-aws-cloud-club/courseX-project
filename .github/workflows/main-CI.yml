@@ -22,9 +22,10 @@ jobs:
         run: |
           mkdir -p courseX-backend/src/main/resources/env
           echo "${{ secrets.ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
-          
+
       - name: build
         run: |
+          cd courseX-backend
           chmod +x gradlew
           ./gradlew clean build
         shell: bash
