@@ -1,5 +1,6 @@
 package com.acc.courseX.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,5 +34,6 @@ public class Enrollment {
   private Course course;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private EnrollmentStatus status = EnrollmentStatus.ENROLLED;
 }

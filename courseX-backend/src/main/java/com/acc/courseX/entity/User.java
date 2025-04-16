@@ -35,6 +35,7 @@ public class User extends BaseTime {
   private String name;
 
   @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
   private Role role = Role.STUDENT;
 
   @ManyToOne(fetch = FetchType.LAZY)
