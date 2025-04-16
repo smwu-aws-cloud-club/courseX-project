@@ -34,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
                     course.getCredit(),
                     course.getProfessorName(),
                     course.getCourseSchedule(),
-                    course.getMaxStudent(),
+                    course.getMaxStudents(),
                     course.getRemainingSeats()))
         .collect(Collectors.toList());
   }

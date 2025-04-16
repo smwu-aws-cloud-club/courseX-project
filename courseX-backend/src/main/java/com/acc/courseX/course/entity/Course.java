@@ -48,7 +48,7 @@ public class Course {
   private CourseType courseType;
 
   private int credit;
-  private int maxStudent;
+  private int maxStudents;
   private int currentStudents;
 
   @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -59,7 +59,7 @@ public class Course {
   }
 
   public int getRemainingSeats() {
-    return maxStudent - currentStudents;
+    return maxStudents - currentStudents;
   }
 
   public String getCourseSchedule() {
