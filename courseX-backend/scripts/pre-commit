@@ -23,11 +23,8 @@ echo "$MODIFIED_FILES"
 for file in $MODIFIED_FILES; do
   # 'courseX-backend/' 부분을 제거하여 상대 경로 계산
   RELATIVE_PATH="${file#"$BACKEND_DIR/"}"
-
-  if [ -f "$BACKEND_DIR/$file" ]; then
-    git add "$RELATIVE_PATH"
-    echo "[hook] Re-added: $RELATIVE_PATH"
-  fi
+  git add "$RELATIVE_PATH"
+  echo "[hook] Re-added: $RELATIVE_PATH"
 done
 
 echo "[hook] Pre-commit hook completed successfully."
