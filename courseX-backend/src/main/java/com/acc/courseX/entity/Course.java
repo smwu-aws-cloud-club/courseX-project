@@ -2,10 +2,17 @@ package com.acc.courseX.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.acc.courseX.entity.enums.CourseType;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -23,6 +30,14 @@ public class Course {
 
   @Column(nullable = false)
   private String name;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "professor_id", nullable = false)
+  private User professor;
+
+  @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
+  private CourseType courseType;
 
   private int credit;
   private int maxStudents;
