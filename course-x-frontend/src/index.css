@@ -1,0 +1,8 @@
+html,
+body,
+div,
+nav,
+aside {
+  margin: 0;
+  padding: 0;
+}
