@@ -38,3 +38,4 @@ out/
 
 ### environment file
 *.properties
+*.env
