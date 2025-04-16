@@ -14,5 +14,4 @@ public abstract class BaseException extends RuntimeException {
   public FailureCode getError() {
     return this.failure;
   }
-  ;
 }
