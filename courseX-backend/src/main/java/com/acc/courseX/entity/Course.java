@@ -16,15 +16,15 @@ import lombok.NoArgsConstructor;
 public class Course {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+  private Long id;
 
   @Column(unique = true, nullable = false)
-  String code;
+  private String code;
 
   @Column(nullable = false)
-  String name;
+  private String name;
 
-  int credit;
-  int maxStudents;
-  int currentStudents;
+  private int credit;
+  private int maxStudents;
+  private int currentStudents;
 }
