@@ -32,7 +32,7 @@ export default function Navbar() {
           <Link
             key={`nav-${to}`}
             to={to}
-            className={`${focus(to) && style.focus}`}
+            className={focus(to) ? style.focus : ''}
           >
             <Icon fillOpacity={focus(to) ? 1 : 0.7} />
             <span>{text}</span>
