@@ -1,0 +1,28 @@
+.container {
+  align-self: self-start;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 225px;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  background-color: var(--color-grey-scale-0);
+  border-radius: 20px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font: var(--label-sm);
+  color: var(--color-grey-scale-30);
+}
+
+.text {
+  font: var(--text-md-emphasis);
+  color: var(--color-grey-scale-75);
+}

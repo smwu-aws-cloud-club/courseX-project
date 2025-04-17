@@ -1,0 +1,60 @@
+:root {
+  /* color */
+  --color-primary-navy: #042131;
+  --color-primary-blue: #3f5a7a;
+  --color-primary-skyblue: #cccfe080;
+
+  --color-grey-scale-0: #ffffff;
+  --color-grey-scale-10: #fbfbfb;
+  --color-grey-scale-15: #eeeeee;
+  --color-grey-scale-20: #a9bac6;
+  --color-grey-scale-30: #92a5b3;
+  --color-grey-scale-75: #3e4e5b;
+  --color-grey-scale-90: #22323b;
+  --color-grey-scale-90: #22323b;
+
+  --color-grey-scale-transparent: #ffffffb3;
+  --color-grey-scale-transparent-2: #ffffffe6;
+
+  /* text */
+  --title-exlg: 700 48px 'Pretendard Variable', sans-serif;
+  --title-lg: 600 32px 'Pretendard Variable', sans-serif;
+  --title-sm: 600 18px 'Pretendard Variable', sans-serif;
+
+  --text-exlg: 400 24px 'Pretendard Variable', sans-serif;
+  --text-lg: 400 20px 'Pretendard Variable', sans-serif;
+  --text-md: 400 16px 'Pretendard Variable', sans-serif;
+  --text-md-emphasis: 600 16px 'Pretendard Variable', sans-serif;
+  --text-sm: 400 14px 'Pretendard Variable', sans-serif;
+
+  --label-md: 500 14px 'Pretendard Variable', sans-serif;
+  --label-md-table: 600 13px 'Inter', sans-serif;
+  --label-sm: 500 12px 'Pretendard Variable', sans-serif;
+}
+
+/* reset */
+html,
+body,
+main,
+aside,
+nav,
+section,
+h1,
+div,
+span {
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button {
+  border: none;
+  outline: none;
+}
+
+/* layout */
+body {
+  margin: 20px 28px;
+  background-color: var(--color-primary-skyblue);
+  font-family: 'Pretendard Variable';
+}

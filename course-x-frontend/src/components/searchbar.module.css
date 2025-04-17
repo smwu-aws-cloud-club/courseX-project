@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  gap: 10px;
+  padding: 18px 40px;
+  border-radius: 20px;
+  background-color: var(--color-grey-scale-0);
+}
+
+.container input {
+  padding: 10px 16px;
+  border-radius: 50px;
+  background-color: var(--color-grey-scale-15);
+
+  color: var(--color-primary-navy);
+  font: var(--text-sm);
+}
+
+.container input::placeholder {
+  color: var(--color-grey-scale-30);
+  font: var(--text-sm);
+}
+
+.container button {
+  padding: 10px 18px;
+  background-color: var(--color-primary-blue);
+  border-radius: 50px;
+
+  color: var(--color-grey-scale-transparent-2);
+  font: var(--text-md);
+  cursor: pointer;
+}
