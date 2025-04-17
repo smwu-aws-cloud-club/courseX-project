@@ -1,4 +1,4 @@
-package com.acc.courseX.entity;
+package com.acc.courseX.major.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,18 +11,12 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "majors")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseTime {
+public class Major {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column(nullable = false)
-  private String email;
-
-  @Column(nullable = false)
-  private String password;
 
   @Column(nullable = false)
   private String name;
