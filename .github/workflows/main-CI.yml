@@ -40,12 +40,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd courseX-frontend
+          cd course-x-frontend
           npm ci
 
       - name: Build the project
         run: |
-          cd courseX-frontend
+          cd course-x-frontend
           npm run build
 
   build_backend:
