@@ -1,6 +1,4 @@
-package com.acc.courseX.entity;
-
-import java.time.LocalTime;
+package com.acc.courseX.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,30 +12,36 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.acc.courseX.entity.enums.Weekday;
+import com.acc.courseX.common.entity.BaseTime;
+import com.acc.courseX.major.entity.Major;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "course_schedules")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CourseSchedule {
+@Getter
+public class User extends BaseTime {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false, unique = true)
+  private String affiliationId;
+
+  @Column(nullable = false)
+  private String password;
+
+  @Column(nullable = false)
+  private String name;
+
+  @Enumerated(value = EnumType.STRING)
+  @Column(nullable = false)
+  private Role role = Role.STUDENT;
+
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "course_id", nullable = false)
-  private Course course;
-
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private Weekday weekday;
-
-  @Column(nullable = false)
-  private LocalTime startTime;
-
-  @Column(nullable = false)
-  private LocalTime endTime;
+  @JoinColumn(name = "major_id", nullable = false)
+  private Major major;
 }

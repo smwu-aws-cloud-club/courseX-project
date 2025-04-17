@@ -1,4 +1,6 @@
-package com.acc.courseX.entity;
+package com.acc.courseX.course.entity;
+
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,28 +14,33 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.acc.courseX.entity.enums.EnrollmentStatus;
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "enrollments")
+@Table(name = "course_schedules")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Enrollment {
+public class CourseSchedule {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
-
-  @ManyToOne
   @JoinColumn(name = "course_id", nullable = false)
   private Course course;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private EnrollmentStatus status = EnrollmentStatus.ENROLLED;
+  private Weekday weekday;
+
+  @Column(nullable = false)
+  private LocalTime startTime;
+
+  @Column(nullable = false)
+  private LocalTime endTime;
+
+  @Override
+  public String toString() {
+    return weekday.getDisplayName() + ": " + startTime + " - " + endTime;
+  }
 }

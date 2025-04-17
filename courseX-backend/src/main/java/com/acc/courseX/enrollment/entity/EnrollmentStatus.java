@@ -1,4 +1,4 @@
-package com.acc.courseX.entity.enums;
+package com.acc.courseX.enrollment.entity;
 
 public enum EnrollmentStatus {
   ENROLLED,

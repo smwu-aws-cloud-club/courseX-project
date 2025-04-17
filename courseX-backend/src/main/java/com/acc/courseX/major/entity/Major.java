@@ -1,4 +1,4 @@
-package com.acc.courseX.entity;
+package com.acc.courseX.major.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

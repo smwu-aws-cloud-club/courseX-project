@@ -1,4 +1,4 @@
-package com.acc.courseX.entity;
+package com.acc.courseX.enrollment.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,34 +12,29 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.acc.courseX.entity.enums.CourseType;
+import com.acc.courseX.course.entity.Course;
+import com.acc.courseX.user.entity.User;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "courses")
+@Table(name = "enrollments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Course {
+public class Enrollment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable = false)
-  private String code;
-
-  @Column(nullable = false)
-  private String name;
-
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "professor_id", nullable = false)
-  private User professor;
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-  @Enumerated(value = EnumType.STRING)
+  @ManyToOne
+  @JoinColumn(name = "course_id", nullable = false)
+  private Course course;
+
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private CourseType courseType;
-
-  private int credit;
-  private int maxStudents;
-  private int currentStudents;
+  private EnrollmentStatus status = EnrollmentStatus.ENROLLED;
 }

@@ -1,4 +1,4 @@
-package com.acc.courseX.entity;
+package com.acc.courseX.common.entity;
 
 import static lombok.AccessLevel.PROTECTED;
 
