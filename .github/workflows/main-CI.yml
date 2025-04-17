@@ -22,7 +22,7 @@ jobs:
             backend:
               - 'courseX-backend/**'
             frontend:
-              - 'courseX-frontend/**'
+              - 'course-x-frontend/**'
 
   build_frontend:
     needs: detect_changes
