@@ -2,26 +2,53 @@ name: courseX main CI
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   detect_changes:
     runs-on: ubuntu-22.04
     outputs:
       backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Check if backend changed
+      - name: Check file changes
         id: filter
         uses: dorny/paths-filter@v3
         with:
           filters: |
             backend:
               - 'courseX-backend/**'
+            frontend:
+              - 'courseX-frontend/**'
 
-  build:
+  build_frontend:
+    needs: detect_changes
+    if: needs.detect_changes.outputs.frontend_changed == 'true'
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          cd courseX-frontend
+          npm ci
+
+      - name: Build the project
+        run: |
+          cd courseX-frontend
+          npm run build
+
+  build_backend:
     needs: detect_changes
     if: needs.detect_changes.outputs.backend_changed == 'true'
     runs-on: ubuntu-22.04
@@ -41,9 +68,8 @@ jobs:
           mkdir -p courseX-backend/src/main/resources/env
           echo "${{ secrets.ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
 
-      - name: Build
+      - name: Build backend
         run: |
           cd courseX-backend
           chmod +x gradlew
           ./gradlew clean build
-        shell: bash
