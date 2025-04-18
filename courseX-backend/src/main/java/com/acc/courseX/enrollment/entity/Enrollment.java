@@ -16,11 +16,13 @@ import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.user.entity.User;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "enrollments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Enrollment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
