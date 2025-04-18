@@ -38,4 +38,7 @@ public class CourseServiceImpl implements CourseService {
                     course.getRemainingSeats()))
         .collect(Collectors.toList());
   }
+
+  @Override
+  public void enroll(Long courseId, Long userId) {}
 }
