@@ -1,11 +1,12 @@
 package com.acc.courseX.enrollment.validator;
 
+import static com.acc.courseX.course.code.CourseFailure.COURSE_FULL;
 import static com.acc.courseX.enrollment.code.EnrollmentFailure.ALREADY_ENROLLED;
-import static com.acc.courseX.enrollment.code.EnrollmentFailure.COURSE_FULL;
 import static com.acc.courseX.enrollment.code.EnrollmentFailure.TIMETABLE_CONFLICT;
 
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.entity.CourseSchedule;
+import com.acc.courseX.course.exception.CourseException;
 import com.acc.courseX.enrollment.exception.EnrollmentException;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 import com.acc.courseX.user.entity.User;
@@ -33,7 +34,7 @@ public abstract class AbstractEnrollmentValidator implements EnrollmentValidator
 
   protected void validateRemainingSeats(Course course) {
     if (course.getRemainingSeats() <= 0) {
-      throw new EnrollmentException(COURSE_FULL);
+      throw new CourseException(COURSE_FULL);
     }
   }
 
