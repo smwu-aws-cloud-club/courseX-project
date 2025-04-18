@@ -4,6 +4,7 @@ import static com.acc.courseX.course.code.CourseSuccess.GET_COURSE_LIST;
 
 import java.util.List;
 
+import com.acc.courseX.common.annotation.AuthUserId;
 import com.acc.courseX.common.response.ResponseUtil;
 import com.acc.courseX.course.dto.CourseResponse;
 import com.acc.courseX.course.service.CourseService;
@@ -32,7 +33,7 @@ public class CourseController implements CourseApi {
 
   @PostMapping("/{courseId}/enroll")
   @Override
-  public ResponseEntity<?> enroll(@PathVariable Long courseId, Long userId) {
+  public ResponseEntity<?> enroll(@PathVariable Long courseId, @AuthUserId Long userId) {
     return null;
   }
 }
