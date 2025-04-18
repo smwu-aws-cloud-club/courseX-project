@@ -1,5 +1,8 @@
 package com.acc.courseX.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,9 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import com.acc.courseX.common.entity.BaseTime;
+import com.acc.courseX.enrollment.entity.Enrollment;
 import com.acc.courseX.major.entity.Major;
 
 import lombok.AccessLevel;
@@ -44,4 +49,7 @@ public class User extends BaseTime {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "major_id", nullable = false)
   private Major major;
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<Enrollment> enrollments = new ArrayList<>();
 }
