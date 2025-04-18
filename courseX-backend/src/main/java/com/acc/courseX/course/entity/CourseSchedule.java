@@ -15,11 +15,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "course_schedules")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class CourseSchedule {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
