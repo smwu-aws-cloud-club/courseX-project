@@ -1,5 +1,6 @@
 package com.acc.courseX.course.controller;
 
+import static com.acc.courseX.course.code.CourseSuccess.COURSE_ENROLLMENT_SUCCESS;
 import static com.acc.courseX.course.code.CourseSuccess.GET_COURSE_LIST;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class CourseController implements CourseApi {
   @PostMapping("/{courseId}/enroll")
   @Override
   public ResponseEntity<?> enroll(@PathVariable Long courseId, @AuthUserId Long userId) {
-    return null;
+    courseService.enroll(courseId, userId);
+    return ResponseUtil.success(COURSE_ENROLLMENT_SUCCESS);
   }
 }
