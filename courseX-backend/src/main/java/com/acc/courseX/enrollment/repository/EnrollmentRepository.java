@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.entity.Weekday;
 import com.acc.courseX.enrollment.entity.Enrollment;
+import com.acc.courseX.enrollment.entity.EnrollmentStatus;
 import com.acc.courseX.user.entity.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,11 +21,13 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
           + "JOIN Enrollment e ON cs1.course.id = e.course.id "
           + "JOIN User u ON e.user.id = u.id "
           + "WHERE u.id = :userId "
+          + "AND e.status = :enrollmentStatus "
           + "AND cs1.weekday = :weekday "
           + "AND cs1.startTime < :newEndTime "
           + "AND cs1.endTime > :newStartTime")
   boolean existsTimeOverlap(
       @Param("userId") Long userId,
+      @Param("enrollmentStatus") EnrollmentStatus status,
       @Param("weekday") Weekday weekday,
       @Param("newStartTime") LocalTime newStartTime,
       @Param("newEndTime") LocalTime newEndTime);

@@ -7,6 +7,7 @@ import static com.acc.courseX.enrollment.code.EnrollmentFailure.TIMETABLE_CONFLI
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.entity.CourseSchedule;
 import com.acc.courseX.course.exception.CourseException;
+import com.acc.courseX.enrollment.entity.EnrollmentStatus;
 import com.acc.courseX.enrollment.exception.EnrollmentException;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 import com.acc.courseX.user.entity.User;
@@ -43,6 +44,7 @@ public abstract class AbstractEnrollmentValidator implements EnrollmentValidator
       boolean isConflict =
           enrollmentRepository.existsTimeOverlap(
               user.getId(),
+              EnrollmentStatus.ENROLLED,
               newSchedule.getWeekday(),
               newSchedule.getStartTime(),
               newSchedule.getEndTime());
