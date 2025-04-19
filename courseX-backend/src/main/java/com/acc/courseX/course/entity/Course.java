@@ -1,5 +1,7 @@
 package com.acc.courseX.course.entity;
 
+import static com.acc.courseX.course.code.CourseFailure.COURSE_FULL;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import com.acc.courseX.course.exception.CourseException;
 import com.acc.courseX.user.entity.User;
 
 import lombok.AccessLevel;
@@ -64,5 +67,12 @@ public class Course {
 
   public String getCourseSchedule() {
     return schedules.stream().map(CourseSchedule::toString).collect(Collectors.joining(", "));
+  }
+
+  public void increaseCurrentStudents() {
+    if (this.currentStudents >= maxStudents) {
+      throw new CourseException(COURSE_FULL);
+    }
+    this.currentStudents++;
   }
 }

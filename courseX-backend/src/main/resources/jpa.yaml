@@ -1,13 +1,23 @@
-spring.config.activate.on-profile: dev
 spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: ${JPA_DATABASE_DIALECT}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   jpa:
     hibernate:
       ddl-auto: none
-    database-platform: ${JPA_DATABASE_PLATFORM}
-    database: ${JPA_DATABASE}
+
 ---
-spring.config.activate.on-profile: local
 spring:
+  config:
+    activate:
+      on-profile: local
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,12 +25,12 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-      database-platform: ${JPA_DATABASE_PLATFORM}
-      database: ${JPA_DATABASE}
 
 ---
-spring.config.activate.on-profile: test
 spring:
+  config:
+    activate:
+      on-profile: test
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -28,5 +38,3 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-      database-platform: ${JPA_DATABASE_PLATFORM}
-      database: ${JPA_DATABASE}

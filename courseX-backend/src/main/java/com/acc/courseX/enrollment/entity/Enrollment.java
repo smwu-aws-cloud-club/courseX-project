@@ -16,11 +16,14 @@ import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.user.entity.User;
 
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "enrollments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Enrollment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +40,10 @@ public class Enrollment {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private EnrollmentStatus status = EnrollmentStatus.ENROLLED;
+
+  @Builder
+  private Enrollment(User user, Course course) {
+    this.user = user;
+    this.course = course;
+  }
 }
