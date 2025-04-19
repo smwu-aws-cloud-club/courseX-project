@@ -7,11 +7,11 @@ import style from './EnrollPage.module.css';
 
 export default function EnrollPage() {
   const [searchParams] = useSearchParams();
-  const { q } = Object.fromEntries(searchParams.entries());
+  const { code } = Object.fromEntries(searchParams.entries());
 
   useEffect(() => {
-    console.log(`${q} 검색`);
-  }, [q]);
+    console.log(`${code} 검색`);
+  }, [code]);
 
   return (
     <section className={style.container}>

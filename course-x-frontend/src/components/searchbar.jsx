@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import style from './searchbar.module.css';
 
@@ -6,18 +6,24 @@ export default function Searchbar() {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { q } = Object.fromEntries(searchParams.entries());
+  const { code } = Object.fromEntries(searchParams.entries());
+
+  useEffect(() => {
+    if (code !== '' && code !== search) {
+      setSearch(code);
+    }
+  }, [code]);
 
   const onChangeSearch = (e) => {
     setSearch(e.target.value);
   };
 
   const onSubmit = () => {
-    if (q === search) {
+    if (code === search) {
       return;
     }
 
-    navigate(`/enroll?q=${search}`);
+    navigate(`/enroll?code=${search}`);
   };
 
   const onKeyDown = (e) => {
