@@ -46,7 +46,7 @@ jobs:
       - name: Build the project
         run: |
           cd course-x-frontend
-          npm run build
+          CI='' npm run build
 
   build_backend:
     needs: detect_changes
