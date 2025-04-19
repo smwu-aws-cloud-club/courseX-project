@@ -4,6 +4,8 @@
   width: 238px;
   height: 80vh;
   padding: 0 24px;
+  position: sticky;
+  top: 20px;
   box-sizing: border-box;
   border-radius: 25px;
   background-color: var(--color-primary-navy);
