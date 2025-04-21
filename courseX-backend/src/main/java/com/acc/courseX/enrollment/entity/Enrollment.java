@@ -46,4 +46,8 @@ public class Enrollment {
     this.user = user;
     this.course = course;
   }
+
+  public void cancel() {
+    this.status = EnrollmentStatus.CANCELLED;
+  }
 }
