@@ -8,4 +8,6 @@ public interface CourseService {
   List<CourseResponse> getCourses(String code);
 
   void enroll(Long courseId, Long userId);
+
+  void cancelEnrollment(Long enrollmentId, Long userId);
 }
