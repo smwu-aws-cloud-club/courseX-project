@@ -1,299 +1,272 @@
 [
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "1",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "2",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "3",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "4",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "5",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "6",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "7",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "8",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "9",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "10",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "11",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "12",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "13",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "14",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "15",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "16",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "17",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "18",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "19",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "20",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "21",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "22",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "23",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "24",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "25",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "26",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "27",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "28",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "29",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   },
   {
-    "code": "1234567",
-    "name": "컴퓨터구조",
+    "code": "30",
+    "name": "데이터베이스프로그래밍",
     "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
+    "professorName": "심준호",
+    "courseSchedule": "월: 12:30 - 13:30, 수: 12:30 - 13:30",
     "maxStudent": 30,
-    "remainingSeats": 12
-  },
-  {
-    "code": "1234567",
-    "name": "컴퓨터구조",
-    "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
-    "maxStudent": 30,
-    "remainingSeats": 12
-  },
-  {
-    "code": "1234567",
-    "name": "컴퓨터구조",
-    "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
-    "maxStudent": 30,
-    "remainingSeats": 12
-  },
-  {
-    "code": "1234567",
-    "name": "컴퓨터구조",
-    "credit": 3,
-    "professorName": "박숙영",
-    "courseSchedule": "화, 목9:00-10:15",
-    "maxStudent": 30,
-    "remainingSeats": 12
+    "remainingSeats": 30
   }
 ]
