@@ -9,8 +9,8 @@ export const defaultAxios = axios.create({
 
 export const authAxios = axios.create({
   baseURL: process.env.REACT_APP_SERVER_DOMAIN,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    withCredentials: true,
   },
 });
