@@ -6,4 +6,6 @@ public interface CourseApi {
   ResponseEntity<?> getCourses(String code);
 
   ResponseEntity<?> enroll(Long courseId, Long userId);
+
+  ResponseEntity<?> cancelEnrollment(Long enrollmentId, Long userId);
 }

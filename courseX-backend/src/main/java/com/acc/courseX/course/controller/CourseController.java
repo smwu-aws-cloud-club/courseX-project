@@ -1,5 +1,6 @@
 package com.acc.courseX.course.controller;
 
+import static com.acc.courseX.course.code.CourseSuccess.COURSE_ENROLLMENT_CANCEL_SUCCESS;
 import static com.acc.courseX.course.code.CourseSuccess.COURSE_ENROLLMENT_SUCCESS;
 import static com.acc.courseX.course.code.CourseSuccess.GET_COURSE_LIST;
 
@@ -12,6 +13,7 @@ import com.acc.courseX.course.service.CourseService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,5 +39,12 @@ public class CourseController implements CourseApi {
   public ResponseEntity<?> enroll(@PathVariable Long courseId, @AuthUserId Long userId) {
     courseService.enroll(courseId, userId);
     return ResponseUtil.success(COURSE_ENROLLMENT_SUCCESS);
+  }
+
+  @DeleteMapping("/enrollments/{enrollmentId}")
+  public ResponseEntity<?> cancelEnrollment(
+      @PathVariable Long enrollmentId, @AuthUserId Long userId) {
+    courseService.cancelEnrollment(enrollmentId, userId);
+    return ResponseUtil.success(COURSE_ENROLLMENT_CANCEL_SUCCESS);
   }
 }
