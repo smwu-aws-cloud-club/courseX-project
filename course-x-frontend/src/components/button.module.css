@@ -13,3 +13,8 @@
   color: var(--color-grey-scale-0);
   filter: brightness(1.1);
 }
+
+.button:disabled {
+  cursor: not-allowed;
+  filter: none;
+}

@@ -1,12 +1,15 @@
 import { rest } from 'msw';
 
+const delay = 2000;
+
 export const handlers = [
   // 수강신청
-  rest.post('/api/courses/:course_id/enroll', (req, res, ctx) => {
+  rest.post('/api/courses/:course_id/enroll', async (req, res, ctx) => {
     const { course_id } = req.params;
 
     if (course_id === '1') {
       return res(
+        ctx.delay(delay),
         ctx.status(201),
         ctx.json({
           success: true,
@@ -18,6 +21,7 @@ export const handlers = [
 
     if (course_id === '2') {
       return res(
+        ctx.delay(delay),
         ctx.status(400),
         ctx.json({
           success: false,
@@ -29,6 +33,7 @@ export const handlers = [
 
     if (course_id === '3') {
       return res(
+        ctx.delay(delay),
         ctx.status(400),
         ctx.json({
           success: false,
@@ -40,6 +45,7 @@ export const handlers = [
 
     if (course_id === '4') {
       return res(
+        ctx.delay(delay),
         ctx.status(400),
         ctx.json({
           success: false,
@@ -50,6 +56,7 @@ export const handlers = [
     }
 
     return res(
+      ctx.delay(delay),
       ctx.status(404),
       ctx.json({
         success: false,
