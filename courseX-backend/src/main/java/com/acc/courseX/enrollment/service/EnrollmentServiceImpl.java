@@ -2,7 +2,9 @@ package com.acc.courseX.enrollment.service;
 
 import java.util.List;
 
+import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.enrollment.dto.EnrollmentResponse;
+import com.acc.courseX.enrollment.entity.Enrollment;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,20 @@ public class EnrollmentServiceImpl implements EnrollmentService {
   @Transactional(readOnly = true)
   @Override
   public List<EnrollmentResponse> getEnrollments(Long userId) {
-    return null;
+    List<Enrollment> enrollments = enrollmentRepository.findAllByUserIdWithCourseDetails(userId);
+
+    return enrollments.stream()
+        .map(
+            enrollment -> {
+              Course course = enrollment.getCourse();
+              return EnrollmentResponse.of(
+                  enrollment.getId(),
+                  course.getCode(),
+                  course.getName(),
+                  course.getCredit(),
+                  course.getProfessorName(),
+                  course.getCourseSchedule());
+            })
+        .toList();
   }
 }
