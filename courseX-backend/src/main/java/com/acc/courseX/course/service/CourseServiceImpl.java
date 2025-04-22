@@ -29,9 +29,10 @@ public class CourseServiceImpl implements CourseService {
   @Override
   public List<CourseResponse> getCourses(final String code) {
     boolean hasCodeFilter = code != null && !code.isBlank();
-
     List<Course> courses =
-        hasCodeFilter ? courseRepository.findByCode(code) : courseRepository.findAll();
+        hasCodeFilter
+            ? courseRepository.findAllByCodeWithProfessorAndSchedules(code)
+            : courseRepository.findAllWithProfessorAndSchedules();
 
     return courses.stream()
         .map(
