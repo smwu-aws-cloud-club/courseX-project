@@ -5,6 +5,7 @@ import java.util.List;
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.enrollment.dto.EnrollmentResponse;
 import com.acc.courseX.enrollment.entity.Enrollment;
+import com.acc.courseX.enrollment.entity.EnrollmentStatus;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
   @Transactional(readOnly = true)
   @Override
   public List<EnrollmentResponse> getEnrollments(Long userId) {
-    List<Enrollment> enrollments = enrollmentRepository.findAllByUserIdWithCourseDetails(userId);
+    List<Enrollment> enrollments =
+        enrollmentRepository.findAllByUserIdAndStatusWithCourseDetails(
+            userId, EnrollmentStatus.ENROLLED);
 
     return enrollments.stream()
         .map(
