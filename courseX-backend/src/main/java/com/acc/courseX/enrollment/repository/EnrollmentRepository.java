@@ -1,6 +1,7 @@
 package com.acc.courseX.enrollment.repository;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.entity.Weekday;
@@ -31,4 +32,13 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
       @Param("weekday") Weekday weekday,
       @Param("newStartTime") LocalTime newStartTime,
       @Param("newEndTime") LocalTime newEndTime);
+
+  @Query(
+      "SELECT DISTINCT e "
+          + "FROM Enrollment e "
+          + "JOIN FETCH e.course c "
+          + "JOIN FETCH c.professor "
+          + "LEFT JOIN FETCH c.schedules "
+          + "WHERE e.user.id = :userId")
+  List<Enrollment> findAllByUserIdWithCourseDetails(@Param("userId") Long userId);
 }
