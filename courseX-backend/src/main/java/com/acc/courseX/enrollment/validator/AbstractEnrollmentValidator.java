@@ -30,7 +30,8 @@ public abstract class AbstractEnrollmentValidator implements EnrollmentValidator
   }
 
   protected void validateAlreadyEnrolled(Course course, User user) {
-    if (enrollmentRepository.existsByCourseAndUser(course, user)) {
+    if (enrollmentRepository.existsByCourseAndUserAndStatus(
+        course, user, EnrollmentStatus.ENROLLED)) {
       throw new EnrollmentException(ALREADY_ENROLLED);
     }
   }

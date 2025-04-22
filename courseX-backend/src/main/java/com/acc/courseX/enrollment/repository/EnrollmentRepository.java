@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.enrollment.entity.Enrollment;
+import com.acc.courseX.enrollment.entity.EnrollmentStatus;
 import com.acc.courseX.user.entity.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-  boolean existsByCourseAndUser(Course course, User user);
+  boolean existsByCourseAndUserAndStatus(Course course, User user, EnrollmentStatus status);
 
   @Query(
       "SELECT DISTINCT e "
