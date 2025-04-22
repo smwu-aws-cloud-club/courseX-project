@@ -19,6 +19,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
           + "JOIN FETCH e.course c "
           + "JOIN FETCH c.professor "
           + "LEFT JOIN FETCH c.schedules "
-          + "WHERE e.user.id = :userId")
+          + "WHERE e.user.id = :userId "
+          + "AND e.status = 'ENROLLED'")
   List<Enrollment> findAllByUserIdWithCourseDetails(@Param("userId") Long userId);
 }
