@@ -7,6 +7,7 @@ import static com.acc.courseX.enrollment.code.EnrollmentFailure.TIMETABLE_CONFLI
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.entity.CourseSchedule;
 import com.acc.courseX.course.exception.CourseException;
+import com.acc.courseX.course.repository.CourseScheduleRepository;
 import com.acc.courseX.enrollment.entity.EnrollmentStatus;
 import com.acc.courseX.enrollment.exception.EnrollmentException;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public abstract class AbstractEnrollmentValidator implements EnrollmentValidator {
 
   private final EnrollmentRepository enrollmentRepository;
+  private final CourseScheduleRepository courseScheduleRepository;
 
   @Override
   public void validate(Course course, User user) {
@@ -42,7 +44,7 @@ public abstract class AbstractEnrollmentValidator implements EnrollmentValidator
   protected void validateTimetableConflict(Course course, User user) {
     for (CourseSchedule newSchedule : course.getSchedules()) {
       boolean isConflict =
-          enrollmentRepository.existsTimeOverlap(
+          courseScheduleRepository.existsTimeOverlap(
               user.getId(),
               EnrollmentStatus.ENROLLED,
               newSchedule.getWeekday(),
