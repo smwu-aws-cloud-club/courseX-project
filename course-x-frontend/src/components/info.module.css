@@ -5,6 +5,7 @@
   flex-direction: column;
   gap: 24px;
   width: 225px;
+  min-width: 225px;
   padding: 24px 32px;
   position: sticky;
   top: 20px;

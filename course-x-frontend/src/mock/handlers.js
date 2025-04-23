@@ -84,7 +84,7 @@ export const handlers = [
     }
 
     return res(
-      ctx.delay(2000),
+      ctx.delay(delay),
       ctx.status(200),
       ctx.json({
         success: true,
@@ -98,6 +98,28 @@ export const handlers = [
             courseSchedule: '월: 12:30 - 13:30, 수: 12:30 - 13:30',
             maxStudent: 30,
             remainingSeats: 30,
+          },
+        ],
+      })
+    );
+  }),
+
+  // 수강 신청 내역 조회
+  rest.get('/api/enrollments', async (req, res, ctx) => {
+    return res(
+      ctx.delay(delay),
+      ctx.status(200),
+      ctx.json({
+        success: true,
+        message: '수강 신청 목록 조회에 성공했습니다',
+        data: [
+          {
+            enrollmentId: 4,
+            courseCode: '2345',
+            courseName: '데이터베이스설계및질의',
+            courseCredit: 3,
+            courseProfessorName: '심준호',
+            courseSchedule: '목: 12:30 - 13:30, 화: 12:30 - 13:30',
           },
         ],
       })
