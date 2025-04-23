@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { fetchEnrollments } from 'api/course';
+import { fetchEnrollments, cancel as cancelApi } from 'api/course';
 
 import Button from 'components/button';
 
@@ -15,6 +15,16 @@ function Row({
   courseProfessorName,
   courseSchedule,
 }) {
+  const cancel = useMutation({
+    mutationFn: (enrollmentId) => cancelApi(enrollmentId),
+    onSuccess: (message) => {
+      alert(message);
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+
   return (
     <div className={style.row}>
       <div className={style.cell}>{courseCode}</div>
@@ -28,7 +38,12 @@ function Row({
           .join(`\n`)}
       </div>
       <div className={style.cell}>
-        <Button onClick={() => alert(`${courseName} 신청 취소`)}>취소</Button>
+        <Button
+          onClick={() => cancel.mutate(enrollmentId)}
+          disabled={cancel.isPending}
+        >
+          {cancel.isPending ? '...' : '취소'}
+        </Button>
       </div>
     </div>
   );
@@ -36,9 +51,11 @@ function Row({
 
 export default function CancelPage() {
   const { name, totalCredit } = info;
-  const { data: courses, isLoading } = useQuery({
+  const { data: courses, isPending } = useQuery({
     queryKey: ['enrollments'],
     queryFn: fetchEnrollments,
+    staleTime: Infinity,
+    cacheTime: Infinity,
   });
 
   return (
@@ -48,8 +65,8 @@ export default function CancelPage() {
         <span className={style.strong}>{totalCredit}</span> 학점입니다.
       </div>
       <div className={style.view_container}>
-        {isLoading && <div>로딩 중...</div>}
-        {!isLoading && (
+        {isPending && <div>로딩 중...</div>}
+        {!isPending && (
           <>
             <div className={`${style.row} ${style.header}`}>
               <div className={style.cell}>과목번호</div>
@@ -61,7 +78,7 @@ export default function CancelPage() {
             </div>
 
             {courses.map((course) => (
-              <Row key={course.code} {...course} />
+              <Row key={`enroll-list-${course.enrollmentId}`} {...course} />
             ))}
           </>
         )}
