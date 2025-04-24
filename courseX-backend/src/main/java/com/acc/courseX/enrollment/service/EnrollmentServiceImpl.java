@@ -35,7 +35,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
       throw new EnrollmentException(ENROLLMENT_ALREADY_CANCELLED);
     }
 
-    enrollment.cancel();
+    enrollment.updateEnrollmentStatus(EnrollmentStatus.CANCELLED);
 
     Course course = enrollment.getCourse();
     course.decreaseCurrentStudents();

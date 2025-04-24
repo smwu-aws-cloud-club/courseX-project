@@ -47,7 +47,7 @@ public class Enrollment {
     this.course = course;
   }
 
-  public void cancel() {
-    this.status = EnrollmentStatus.CANCELLED;
+  public void updateEnrollmentStatus(EnrollmentStatus status) {
+    this.status = status;
   }
 }
