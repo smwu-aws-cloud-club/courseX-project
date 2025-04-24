@@ -75,4 +75,10 @@ public class Course {
     }
     this.currentStudents++;
   }
+
+  public void decreaseCurrentStudents() {
+    if (this.currentStudents > 0) {
+      this.currentStudents--;
+    }
+  }
 }

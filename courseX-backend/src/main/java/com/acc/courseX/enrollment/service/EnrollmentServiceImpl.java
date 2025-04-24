@@ -1,11 +1,16 @@
 package com.acc.courseX.enrollment.service;
 
+import static com.acc.courseX.enrollment.code.EnrollmentFailure.ENROLLMENT_ALREADY_CANCELLED;
+import static com.acc.courseX.enrollment.code.EnrollmentFailure.ENROLLMENT_NOT_FOUND;
+import static com.acc.courseX.enrollment.code.EnrollmentFailure.UNAUTHORIZED_CANCEL;
+
 import java.util.List;
 
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.enrollment.dto.EnrollmentResponse;
 import com.acc.courseX.enrollment.entity.Enrollment;
 import com.acc.courseX.enrollment.entity.EnrollmentStatus;
+import com.acc.courseX.enrollment.exception.EnrollmentException;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -37,5 +42,27 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                   course.getCourseSchedule());
             })
         .toList();
+  }
+
+  @Override
+  @Transactional
+  public void cancel(Long enrollmentId, Long userId) {
+    Enrollment enrollment =
+        enrollmentRepository
+            .findById(enrollmentId)
+            .orElseThrow(() -> new EnrollmentException(ENROLLMENT_NOT_FOUND));
+
+    if (!enrollment.getUser().getId().equals(userId)) {
+      throw new EnrollmentException(UNAUTHORIZED_CANCEL);
+    }
+
+    if (enrollment.getStatus() == EnrollmentStatus.CANCELLED) {
+      throw new EnrollmentException(ENROLLMENT_ALREADY_CANCELLED);
+    }
+
+    enrollment.updateEnrollmentStatus(EnrollmentStatus.CANCELLED);
+
+    Course course = enrollment.getCourse();
+    course.decreaseCurrentStudents();
   }
 }
