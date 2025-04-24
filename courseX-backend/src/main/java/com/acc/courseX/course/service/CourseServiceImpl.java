@@ -1,5 +1,7 @@
 package com.acc.courseX.course.service;
 
+import static com.acc.courseX.enrollment.code.EnrollmentFailure.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
