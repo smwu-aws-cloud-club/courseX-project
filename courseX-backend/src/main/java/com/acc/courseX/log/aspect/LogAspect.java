@@ -107,7 +107,7 @@ public class LogAspect {
   }
 
   @AfterReturning(
-      "execution(* com.acc.courseX.course.controller.CourseController.cancelEnrollment(..))")
+      "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))")
   public void logAfterCancelEnrollment(JoinPoint joinPoint) {
     try {
       Object[] args = joinPoint.getArgs();
@@ -134,7 +134,7 @@ public class LogAspect {
 
   @AfterThrowing(
       pointcut =
-          "execution(* com.acc.courseX.course.controller.CourseController.cancelEnrollment(..))",
+          "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))",
       throwing = "exception")
   public void logAfterCancelEnrollmentFailure(JoinPoint joinPoint, Exception exception) {
     try {
