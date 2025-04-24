@@ -5,6 +5,10 @@ import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import com.acc.courseX.course.entity.Course;
+import com.acc.courseX.course.repository.CourseRepository;
+import com.acc.courseX.enrollment.entity.Enrollment;
+import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 import com.acc.courseX.log.service.LogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,6 +29,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class LogAspect {
   private final LogService logService;
   private final ObjectMapper objectMapper;
+  private final EnrollmentRepository enrollmentRepository;
+  private final CourseRepository courseRepository;
 
   @AfterReturning("execution(* com.acc.courseX.course.controller.CourseController.getCourses(..))")
   public void logAfterViewCourse(JoinPoint joinPoint) {
@@ -59,17 +65,22 @@ public class LogAspect {
       Long courseId = (Long) args[0];
       Long userId = (Long) args[1];
 
+      Course course = courseRepository.findById(courseId).orElse(null);
+
       HttpServletRequest request =
           ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
       Map<String, Object> metadata = new HashMap<>();
-      metadata.put("courseId", courseId);
+      if (course != null) {
+        metadata.put("courseName", course.getName());
+        metadata.put("courseCode", course.getCode());
+      }
 
       logService.createLog(
           userId,
           "enroll_course",
           "enrollments",
-          null,
+          courseId,
           objectMapper.writeValueAsString(metadata),
           request);
     } catch (Exception e) {
@@ -90,15 +101,14 @@ public class LogAspect {
           ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
       Map<String, Object> metadata = new HashMap<>();
-      metadata.put("courseId", courseId);
       metadata.put("errorMessage", exception.getMessage());
       metadata.put("exceptionType", exception.getClass().getSimpleName());
 
       logService.createLog(
           userId,
           "enroll_course_failure",
-          "enrollments",
-          null,
+          "courses",
+          courseId,
           objectMapper.writeValueAsString(metadata),
           request);
     } catch (Exception e) {
@@ -114,11 +124,15 @@ public class LogAspect {
       Long enrollmentId = (Long) args[0];
       Long userId = (Long) args[1];
 
+      Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+
       HttpServletRequest request =
           ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
       Map<String, Object> metadata = new HashMap<>();
-      metadata.put("enrollmentId", enrollmentId);
+      if (enrollment != null) {
+        metadata.put("courseId", enrollment.getCourse().getId());
+      }
 
       logService.createLog(
           userId,
@@ -146,7 +160,6 @@ public class LogAspect {
           ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
       Map<String, Object> metadata = new HashMap<>();
-      metadata.put("enrollmentId", enrollmentId);
       metadata.put("errorMessage", exception.getMessage());
       metadata.put("exceptionType", exception.getClass().getSimpleName());
 
