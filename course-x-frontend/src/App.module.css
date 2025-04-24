@@ -5,4 +5,5 @@
 
 .container section {
   flex: 1;
+  min-width: 800px;
 }

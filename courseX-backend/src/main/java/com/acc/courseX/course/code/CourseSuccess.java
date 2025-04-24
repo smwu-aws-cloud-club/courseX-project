@@ -13,11 +13,10 @@ import org.springframework.http.HttpStatus;
 public enum CourseSuccess implements SuccessCode {
   // 200
   GET_COURSE_LIST(HttpStatus.OK, "강의 목록 조회에 성공했습니다."),
+  COURSE_ENROLLMENT_CANCEL_SUCCESS(HttpStatus.OK, "수강 취소가 완료되었습니다."),
 
   // 201
-  COURSE_ENROLLMENT_SUCCESS(HttpStatus.CREATED, "수강신청에 성공했습니다"),
-
-  COURSE_ENROLLMENT_CANCEL_SUCCESS(HttpStatus.OK, "수강 취소가 완료되었습니다.");
+  COURSE_ENROLLMENT_SUCCESS(HttpStatus.CREATED, "수강신청에 성공했습니다");
 
   private final HttpStatus status;
   private final String message;

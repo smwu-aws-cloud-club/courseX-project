@@ -6,7 +6,7 @@ export default function Searchbar() {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { code } = Object.fromEntries(searchParams.entries());
+  const code = searchParams.get('code') ?? '';
 
   useEffect(() => {
     if (code !== '' && code !== search) {
