@@ -91,7 +91,25 @@ export const handlers = [
         message: '강의 목록 조회에 성공했습니다.',
         data: [
           {
-            code: '1234',
+            code: '1',
+            name: '데이터베이스프로그래밍',
+            credit: 3,
+            professorName: '심준호',
+            courseSchedule: '월: 12:30 - 13:30, 수: 12:30 - 13:30',
+            maxStudent: 30,
+            remainingSeats: 30,
+          },
+          {
+            code: '2',
+            name: '데이터베이스프로그래밍',
+            credit: 3,
+            professorName: '심준호',
+            courseSchedule: '월: 12:30 - 13:30, 수: 12:30 - 13:30',
+            maxStudent: 30,
+            remainingSeats: 30,
+          },
+          {
+            code: '3',
             name: '데이터베이스프로그래밍',
             credit: 3,
             professorName: '심준호',
@@ -114,14 +132,69 @@ export const handlers = [
         message: '수강 신청 목록 조회에 성공했습니다',
         data: [
           {
-            enrollmentId: 4,
-            courseCode: '2345',
+            enrollmentId: 1,
+            courseCode: '1',
+            courseName: '데이터베이스설계및질의',
+            courseCredit: 3,
+            courseProfessorName: '심준호',
+            courseSchedule: '목: 12:30 - 13:30, 화: 12:30 - 13:30',
+          },
+          {
+            enrollmentId: 2,
+            courseCode: '2',
+            courseName: '데이터베이스설계및질의',
+            courseCredit: 3,
+            courseProfessorName: '심준호',
+            courseSchedule: '목: 12:30 - 13:30, 화: 12:30 - 13:30',
+          },
+          {
+            enrollmentId: 3,
+            courseCode: '3',
             courseName: '데이터베이스설계및질의',
             courseCredit: 3,
             courseProfessorName: '심준호',
             courseSchedule: '목: 12:30 - 13:30, 화: 12:30 - 13:30',
           },
         ],
+      })
+    );
+  }),
+
+  // 수강 취소
+  rest.delete('/api/enrollments/:enrollment_id', async (req, res, ctx) => {
+    const { enrollment_id } = req.params;
+
+    if (enrollment_id === '1') {
+      return res(
+        ctx.delay(delay),
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: '수강 취소가 완료되었습니다.',
+          data: null,
+        })
+      );
+    }
+
+    if (enrollment_id === '2') {
+      return res(
+        ctx.delay(delay),
+        ctx.status(400),
+        ctx.json({
+          success: false,
+          message: '이미 취소된 수강 신청입니다.',
+          data: null,
+        })
+      );
+    }
+
+    return res(
+      ctx.delay(delay),
+      ctx.status(404),
+      ctx.json({
+        success: false,
+        message: '존재하지 않는 수강 신청입니다.',
+        data: null,
       })
     );
   }),
