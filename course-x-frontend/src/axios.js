@@ -14,3 +14,18 @@ export const authAxios = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+authAxios.interceptors.request.use(
+  (config) => {
+    const userId = localStorage.getItem('userId');
+
+    if (userId) {
+      config.headers['X-USER-ID'] = userId;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
