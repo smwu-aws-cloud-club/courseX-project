@@ -19,6 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class LogServiceImpl implements LogService {
+  private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
+  private static final String HEADER_PROXY_CLIENT_IP = "Proxy-Client-IP";
+  private static final String HEADER_WL_PROXY_CLIENT_IP = "WL-Proxy-Client-IP";
+  private static final String UNKNOWN = "unknown";
+
   private final LogRepository logRepository;
   private final UserRepository userRepository;
 
@@ -67,14 +72,14 @@ public class LogServiceImpl implements LogService {
   }
 
   private String getClientIp(HttpServletRequest request) {
-    String ipAddress = request.getHeader("X-Forwarded-For");
-    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
-      ipAddress = request.getHeader("Proxy-Client-IP");
+    String ipAddress = request.getHeader(HEADER_X_FORWARDED_FOR);
+    if (ipAddress == null || ipAddress.isEmpty() || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+      ipAddress = request.getHeader(HEADER_PROXY_CLIENT_IP);
     }
-    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
-      ipAddress = request.getHeader("WL-Proxy-Client-IP");
+    if (ipAddress == null || ipAddress.isEmpty() || UNKNOWN.equalsIgnoreCase(ipAddress)) {
+      ipAddress = request.getHeader(HEADER_WL_PROXY_CLIENT_IP);
     }
-    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+    if (ipAddress == null || ipAddress.isEmpty() || UNKNOWN.equalsIgnoreCase(ipAddress)) {
       ipAddress = request.getRemoteAddr();
     }
     return ipAddress;
