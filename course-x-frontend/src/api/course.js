@@ -1,10 +1,14 @@
-import { authAxios } from 'axios.js';
+import { defaultAxios, authAxios } from 'axios.js';
 
-export const enroll = async (code) => {
+export const fetchCourses = async (code) => {
   try {
-    const response = await authAxios.post(`/api/courses/${code}/enroll`);
+    const response = await defaultAxios.get('/api/courses', {
+      params: {
+        code,
+      },
+    });
 
-    return response.data.message;
+    return response.data.data;
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message);
@@ -18,15 +22,11 @@ export const enroll = async (code) => {
   }
 };
 
-export const fetchCourses = async (code) => {
+export const enroll = async (code) => {
   try {
-    const response = await authAxios.get('/api/courses', {
-      params: {
-        code,
-      },
-    });
+    const response = await authAxios.post(`/api/courses/${code}/enroll`);
 
-    return response.data.data;
+    return response.data.message;
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message);
