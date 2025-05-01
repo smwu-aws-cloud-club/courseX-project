@@ -16,8 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -92,6 +94,20 @@ public class LogAspect {
 
     Map<String, Object> metadata = errorMetadata(exception);
     logAction(userId, LogAction.DROP_COURSE_FAILURE, "enrollments", enrollmentId, metadata);
+  }
+
+  @Around("execution(* com.acc.courseX.log.service.LogService.*(..))")
+  public Object measureLogServiceExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+    long startTime = System.currentTimeMillis();
+    Object result = joinPoint.proceed(); // 메서드 실행
+    long executionTime = System.currentTimeMillis() - startTime;
+
+    log.info(
+        "LogService method [{}] executed in {} ms",
+        joinPoint.getSignature().toShortString(),
+        executionTime);
+
+    return result;
   }
 
   private void logAction(
