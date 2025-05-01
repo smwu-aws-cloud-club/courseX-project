@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.acc.courseX.common.response.ResponseUtil;
 import com.acc.courseX.log.dto.LogResponse;
+import com.acc.courseX.log.entity.LogAction;
 import com.acc.courseX.log.service.LogService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class LogController {
   @GetMapping
   public ResponseEntity<?> getLogs(
       @RequestParam(required = false) Long userId,
-      @RequestParam(required = false) String actionType,
+      @RequestParam(required = false) LogAction actionType,
       @RequestParam(required = false) String targetTable,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
           LocalDate startDate,
@@ -39,8 +40,10 @@ public class LogController {
         startDate != null ? LocalDateTime.of(startDate, LocalTime.MIN) : null;
     LocalDateTime endDateTime = endDate != null ? LocalDateTime.of(endDate, LocalTime.MAX) : null;
 
+    String actionTypeName = (actionType != null) ? actionType.getActionName() : null;
+
     List<LogResponse> response =
-        logService.getLogs(userId, actionType, targetTable, startDateTime, endDateTime);
+        logService.getLogs(userId, actionTypeName, targetTable, startDateTime, endDateTime);
     return ResponseUtil.success(GET_LOG_LIST, response);
   }
 }
