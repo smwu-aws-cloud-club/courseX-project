@@ -13,6 +13,7 @@ import com.acc.courseX.user.entity.User;
 import com.acc.courseX.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class LogServiceImpl implements LogService {
   private final LogRepository logRepository;
   private final UserRepository userRepository;
 
+  @Async("logTaskExecutor")
   @Override
   @Transactional
   public void createLog(
