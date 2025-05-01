@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.repository.CourseRepository;
-import com.acc.courseX.enrollment.entity.Enrollment;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 import com.acc.courseX.log.entity.LogAction;
 import com.acc.courseX.log.service.LogService;
@@ -75,11 +74,7 @@ public class LogAspect {
     Long enrollmentId = (Long) joinPoint.getArgs()[0];
     Long userId = (Long) joinPoint.getArgs()[1];
 
-    Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
     Map<String, Object> metadata = new HashMap<>();
-    if (enrollment != null) {
-      metadata.put("courseId", enrollment.getCourse().getId());
-    }
 
     logAction(userId, LogAction.DROP_COURSE, "enrollments", enrollmentId, metadata);
   }
