@@ -9,6 +9,7 @@ import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.repository.CourseRepository;
 import com.acc.courseX.enrollment.entity.Enrollment;
 import com.acc.courseX.enrollment.repository.EnrollmentRepository;
+import com.acc.courseX.log.entity.LogAction;
 import com.acc.courseX.log.service.LogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,116 +35,51 @@ public class LogAspect {
 
   @AfterReturning("execution(* com.acc.courseX.course.controller.CourseController.getCourses(..))")
   public void logAfterViewCourse(JoinPoint joinPoint) {
-    try {
-      Object[] args = joinPoint.getArgs();
-      String code = (String) args[0];
-
-      HttpServletRequest request =
-          ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-      Long userId = extractUserIdFromRequest(request);
-      if (userId == null) return;
-
-      Map<String, Object> metadata = new HashMap<>();
-      metadata.put("courseCode", code);
-
-      logService.createLog(
-          userId,
-          "view_course",
-          "courses",
-          null,
-          objectMapper.writeValueAsString(metadata),
-          request);
-    } catch (Exception e) {
-      log.error("Failed to log view course action", e);
-    }
+    String courseCode = (String) joinPoint.getArgs()[0];
+    Long userId = extractUserIdOrDefault(0L);
+    Map<String, Object> metadata = Map.of("courseCode", courseCode);
+    logAction(userId, LogAction.VIEW_COURSE, "courses", null, metadata);
   }
 
   @AfterReturning("execution(* com.acc.courseX.course.controller.CourseController.enroll(..))")
   public void logAfterEnrollment(JoinPoint joinPoint) {
-    try {
-      Object[] args = joinPoint.getArgs();
-      Long courseId = (Long) args[0];
-      Long userId = (Long) args[1];
+    Long courseId = (Long) joinPoint.getArgs()[0];
+    Long userId = (Long) joinPoint.getArgs()[1];
 
-      Course course = courseRepository.findById(courseId).orElse(null);
-
-      HttpServletRequest request =
-          ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-      Map<String, Object> metadata = new HashMap<>();
-      if (course != null) {
-        metadata.put("courseName", course.getName());
-        metadata.put("courseCode", course.getCode());
-      }
-
-      logService.createLog(
-          userId,
-          "enroll_course",
-          "enrollments",
-          courseId,
-          objectMapper.writeValueAsString(metadata),
-          request);
-    } catch (Exception e) {
-      log.error("Failed to log enrollment action", e);
+    Course course = courseRepository.findById(courseId).orElse(null);
+    Map<String, Object> metadata = new HashMap<>();
+    if (course != null) {
+      metadata.put("courseName", course.getName());
+      metadata.put("courseCode", course.getCode());
     }
+
+    logAction(userId, LogAction.ENROLL_COURSE, "enrollments", courseId, metadata);
   }
 
   @AfterThrowing(
       pointcut = "execution(* com.acc.courseX.course.controller.CourseController.enroll(..))",
       throwing = "exception")
   public void logAfterEnrollmentFailure(JoinPoint joinPoint, Exception exception) {
-    try {
-      Object[] args = joinPoint.getArgs();
-      Long courseId = (Long) args[0];
-      Long userId = (Long) args[1];
+    Long courseId = (Long) joinPoint.getArgs()[0];
+    Long userId = (Long) joinPoint.getArgs()[1];
 
-      HttpServletRequest request =
-          ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-      Map<String, Object> metadata = new HashMap<>();
-      metadata.put("errorMessage", exception.getMessage());
-      metadata.put("exceptionType", exception.getClass().getSimpleName());
-
-      logService.createLog(
-          userId,
-          "enroll_course_failure",
-          "courses",
-          courseId,
-          objectMapper.writeValueAsString(metadata),
-          request);
-    } catch (Exception e) {
-      log.error("Failed to log enrollment failure action", e);
-    }
+    Map<String, Object> metadata = errorMetadata(exception);
+    logAction(userId, LogAction.ENROLL_COURSE_FAILURE, "courses", courseId, metadata);
   }
 
   @AfterReturning(
       "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))")
   public void logAfterCancelEnrollment(JoinPoint joinPoint) {
-    try {
-      Object[] args = joinPoint.getArgs();
-      Long enrollmentId = (Long) args[0];
-      Long userId = (Long) args[1];
+    Long enrollmentId = (Long) joinPoint.getArgs()[0];
+    Long userId = (Long) joinPoint.getArgs()[1];
 
-      Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
-
-      HttpServletRequest request =
-          ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-      Map<String, Object> metadata = new HashMap<>();
-      if (enrollment != null) {
-        metadata.put("courseId", enrollment.getCourse().getId());
-      }
-
-      logService.createLog(
-          userId,
-          "drop_course",
-          "enrollments",
-          enrollmentId,
-          objectMapper.writeValueAsString(metadata),
-          request);
-    } catch (Exception e) {
-      log.error("Failed to log cancel enrollment action", e);
+    Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElse(null);
+    Map<String, Object> metadata = new HashMap<>();
+    if (enrollment != null) {
+      metadata.put("courseId", enrollment.getCourse().getId());
     }
+
+    logAction(userId, LogAction.DROP_COURSE, "enrollments", enrollmentId, metadata);
   }
 
   @AfterThrowing(
@@ -151,32 +87,54 @@ public class LogAspect {
           "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))",
       throwing = "exception")
   public void logAfterCancelEnrollmentFailure(JoinPoint joinPoint, Exception exception) {
+    Long enrollmentId = (Long) joinPoint.getArgs()[0];
+    Long userId = (Long) joinPoint.getArgs()[1];
+
+    Map<String, Object> metadata = errorMetadata(exception);
+    logAction(userId, LogAction.DROP_COURSE_FAILURE, "enrollments", enrollmentId, metadata);
+  }
+
+  private void logAction(
+      Long userId,
+      LogAction action,
+      String targetTable,
+      Long targetId,
+      Map<String, Object> metadata) {
     try {
-      Object[] args = joinPoint.getArgs();
-      Long enrollmentId = (Long) args[0];
-      Long userId = (Long) args[1];
-
-      HttpServletRequest request =
-          ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-      Map<String, Object> metadata = new HashMap<>();
-      metadata.put("errorMessage", exception.getMessage());
-      metadata.put("exceptionType", exception.getClass().getSimpleName());
-
+      HttpServletRequest request = getCurrentRequest();
+      String metaJson = objectMapper.writeValueAsString(metadata != null ? metadata : Map.of());
       logService.createLog(
-          userId,
-          "drop_course_failure",
-          "enrollments",
-          enrollmentId,
-          objectMapper.writeValueAsString(metadata),
-          request);
+          userId, action.getActionName(), targetTable, targetId, metaJson, request);
     } catch (Exception e) {
-      log.error("Failed to log cancel enrollment failure action", e);
+      log.error("Failed to create log for action: {}", action, e);
     }
   }
 
-  private Long extractUserIdFromRequest(HttpServletRequest request) {
-    String userId = request.getHeader("X-User-Id");
-    return userId != null ? Long.parseLong(userId) : null;
+  private Map<String, Object> errorMetadata(Exception e) {
+    Map<String, Object> metadata = new HashMap<>();
+    metadata.put("errorMessage", e.getMessage());
+    metadata.put("exceptionType", e.getClass().getSimpleName());
+    return metadata;
+  }
+
+  private Long extractUserIdOrDefault(Long defaultValue) {
+    Long id = extractUserId();
+    return id != null ? id : defaultValue;
+  }
+
+  private Long extractUserId() {
+    HttpServletRequest request = getCurrentRequest();
+    String userIdStr = request.getHeader("X-User-Id");
+    try {
+      return userIdStr != null ? Long.parseLong(userIdStr) : null;
+    } catch (NumberFormatException e) {
+      log.warn("Invalid userId format in header: {}", userIdStr);
+      return null;
+    }
+  }
+
+  private HttpServletRequest getCurrentRequest() {
+    return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+        .getRequest();
   }
 }
