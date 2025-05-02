@@ -54,7 +54,7 @@ export default function EnrollPage() {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code') ?? '';
 
-  const { data: courses, isPending } = useQuery({
+  const { data: courses = [], isPending } = useQuery({
     queryKey: ['courses', code],
     queryFn: () => fetchCourses(code),
     staleTime: Infinity,
