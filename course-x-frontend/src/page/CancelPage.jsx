@@ -51,7 +51,7 @@ function Row({
 
 export default function CancelPage() {
   const { name, totalCredit } = info;
-  const { data: courses, isPending } = useQuery({
+  const { data: courses = [], isPending } = useQuery({
     queryKey: ['enrollments'],
     queryFn: fetchEnrollments,
     staleTime: Infinity,

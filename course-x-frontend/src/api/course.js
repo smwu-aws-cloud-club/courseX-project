@@ -8,7 +8,7 @@ export const fetchCourses = async (code) => {
       },
     });
 
-    return response.data.data;
+    return response.data.data ?? [];
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message);
@@ -44,7 +44,7 @@ export const fetchEnrollments = async () => {
   try {
     const response = await authAxios.get('/api/enrollments');
 
-    return response.data.data;
+    return response.data.data ?? [];
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message);
