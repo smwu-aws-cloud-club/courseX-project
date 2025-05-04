@@ -4,6 +4,7 @@ spring:
       on-profile: dev
     import:
       - classpath:jpa.yaml
+      - classpath:monitoring.yaml
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
