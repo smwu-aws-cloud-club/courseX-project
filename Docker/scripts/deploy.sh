@@ -6,6 +6,19 @@ if [ -z "$ECR_REGISTRY" ] || [ -z "$IMAGE_TAG" ]; then
   exit 1
 fi
 
+if [ -f .env ]; then
+  ACTUATOR_PATH_VALUE=$(grep -m 1 "ACTUATOR_PATH=" .env | cut -d '=' -f2)
+  if [ -n "$ACTUATOR_PATH_VALUE" ]; then
+    ACTUATOR_PATH=$ACTUATOR_PATH_VALUE
+  else
+    ACTUATOR_PATH="/actuator"
+  fi
+else
+  ACTUATOR_PATH="/actuator"
+fi
+
+HEALTH_ENDPOINT="${ACTUATOR_PATH}/health"
+
 ACTIVE_SERVICE=$(grep -o 'backend-[a-z]*' nginx/conf.d/default.conf | head -1)
 
 if [ "$ACTIVE_SERVICE" == "backend-blue" ]; then
@@ -15,6 +28,8 @@ else
 fi
 
 echo "현재 활성 서비스: $ACTIVE_SERVICE, 배포 대상: $TARGET_SERVICE"
+echo "Actuator 경로: $ACTUATOR_PATH"
+echo "헬스체크 엔드포인트: http://$TARGET_SERVICE:8080$HEALTH_ENDPOINT"
 
 docker pull $ECR_REGISTRY/coursex-backend:$IMAGE_TAG
 
