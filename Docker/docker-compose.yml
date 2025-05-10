@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  backend-blue:
+    image: ${ECR_REGISTRY}/coursex-backend:${IMAGE_TAG:-latest}
+    container_name: coursex-backend-blue
+    restart: always
+    expose:
+      - "8080"
+    env_file:
+      - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    volumes:
+      - ./logs:/app/logs-blue
+
+  backend-green:
+    image: ${ECR_REGISTRY}/coursex-backend:${PREVIOUS_TAG:-latest}
+    container_name: coursex-backend-green
+    restart: always
+    expose:
+      - "8080"
+    env_file:
+      - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    volumes:
+      - ./logs:/app/logs-green
+
+  nginx:
+    image: nginx:latest
+    container_name: coursex-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - backend-blue
+      - backend-green
