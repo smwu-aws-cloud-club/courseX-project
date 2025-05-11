@@ -2,7 +2,7 @@ import { defaultAxios, authAxios } from 'axios.js';
 
 export const fetchCourses = async (code) => {
   try {
-    const response = await defaultAxios.get('/api/courses', {
+    const response = await defaultAxios.get('/courses', {
       params: {
         code,
       },
@@ -24,7 +24,7 @@ export const fetchCourses = async (code) => {
 
 export const enroll = async (code) => {
   try {
-    const response = await authAxios.post(`/api/courses/${code}/enroll`);
+    const response = await authAxios.post(`/courses/${code}/enroll`);
 
     return response.data.message;
   } catch (error) {
@@ -42,7 +42,7 @@ export const enroll = async (code) => {
 
 export const fetchEnrollments = async () => {
   try {
-    const response = await authAxios.get('/api/enrollments');
+    const response = await authAxios.get('/enrollments');
 
     return response.data.data ?? [];
   } catch (error) {
@@ -60,7 +60,7 @@ export const fetchEnrollments = async () => {
 
 export const cancel = async (enrollmentId) => {
   try {
-    const response = await authAxios.delete(`/api/enrollments/${enrollmentId}`);
+    const response = await authAxios.delete(`/enrollments/${enrollmentId}`);
 
     return response.data.message;
   } catch (error) {
