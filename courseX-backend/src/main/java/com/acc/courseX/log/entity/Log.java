@@ -67,7 +67,7 @@ public class Log {
     this.metadata = metadata;
     this.ipAddress = ipAddress;
     this.userAgent = userAgent;
-    this.createdAt = LocalDateTime.now();
+    this.createdAt = LocalDateTime.now(); // 이 부분에서 현재 시간으로 초기화
   }
 
   @PrePersist
