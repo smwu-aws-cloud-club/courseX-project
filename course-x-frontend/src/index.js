@@ -10,7 +10,17 @@ import { routes } from 'route';
 const root = document.getElementById('root');
 const router = createBrowserRouter(routes);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false, // 🔥 전역에서 쿼리 재시도 끔
+      refetchOnWindowFocus: false,
+    },
+    mutations: {
+      retry: false, // (선택) 변이 재시도도 끄려면 이 줄도 추가
+    },
+  },
+});
 
 if (process.env.NODE_ENV === 'development') {
   const { worker } = require('./mock/browser.js');
