@@ -25,6 +25,17 @@ jobs:
           mkdir -p courseX-backend/src/main/resources/env
           echo "${{ secrets.PROD_ENV_FILE }}" > courseX-backend/src/main/resources/env/prod.env
 
+      - name: Create test env file
+        run: |
+          mkdir -p courseX-backend/src/test/resources/env
+          echo "ACTUATOR_PATH=/course-x-actuator" > courseX-backend/src/test/resources/env/test.env
+          echo "DB_URL=jdbc:h2:mem:testdb" >> courseX-backend/src/test/resources/env/test.env
+          echo "DB_USERNAME=sa" >> courseX-backend/src/test/resources/env/test.env
+          echo "DB_PASSWORD=" >> courseX-backend/src/test/resources/env/test.env
+          echo "DB_DRIVER_CLASS=org.h2.Driver" >> courseX-backend/src/test/resources/env/test.env
+          echo "JPA_DATABASE_DIALECT=org.hibernate.dialect.H2Dialect" >> courseX-backend/src/test/resources/env/test.env
+          echo "SPRING_PROFILES_ACTIVE=test" >> courseX-backend/src/test/resources/env/test.env
+
       - name: Build backend
         run: |
           cd courseX-backend
