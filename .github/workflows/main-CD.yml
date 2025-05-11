@@ -23,7 +23,7 @@ jobs:
       - name: Create resources folder and add env file
         run: |
           mkdir -p courseX-backend/src/main/resources/env
-          echo "${{ secrets.ENV_FILE }}" > courseX-backend/src/main/resources/env/prod.env
+          echo "${{ secrets.PROD_ENV_FILE }}" > courseX-backend/src/main/resources/env/prod.env
 
       - name: Build backend
         run: |
@@ -84,7 +84,7 @@ jobs:
             mv docker-compose.processed.yml docker-compose.yml
             mv deploy.processed.sh deploy.sh
             chmod +x deploy.sh
-            echo "${{ secrets.ENV_FILE }}" > .env
+            echo "${{ secrets.PROD_ENV_FILE }}" > .env
             export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
             export IMAGE_TAG=${{ github.sha }}
             ./deploy.sh
