@@ -95,5 +95,7 @@ jobs:
             cd ~/coursex-deploy
             mv docker-compose.processed.yml docker-compose.yml
             mv prod.env .env
+            export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+            export IMAGE_TAG=${{ github.sha }}
             chmod +x deploy.sh
             ./deploy.sh
