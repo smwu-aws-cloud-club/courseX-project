@@ -52,6 +52,9 @@ for i in {1..10}; do
       docker exec coursex-nginx nginx -s reload
 
       echo "트래픽이 $TARGET_SERVICE로 전환되었습니다."
+      echo "이전 서비스($ACTIVE_SERVICE) 중지 및 정리 중..."
+      docker-compose stop $ACTIVE_SERVICE
+      docker-compose rm -f $ACTIVE_SERVICE
       docker image prune -a
 
       exit 0
