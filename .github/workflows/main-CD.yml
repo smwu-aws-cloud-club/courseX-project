@@ -71,9 +71,18 @@ jobs:
             courseX-backend/deploy/docker-compose.processed.yml,
             courseX-backend/deploy/deploy.sh,
             courseX-backend/deploy/nginx/,
-            courseX-backend/src/main/resources/env/prod.env
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
           strip_components: 3
+      
+      - name: Copy prod.env to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: courseX-backend/src/main/resources/env/prod.env
+          target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
+          strip_components: 5
 
       - name: Deploy to Backend EC2
         uses: appleboy/ssh-action@master
