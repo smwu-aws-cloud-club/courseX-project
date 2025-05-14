@@ -72,7 +72,7 @@ jobs:
             courseX-backend/deploy/deploy.sh,
             courseX-backend/deploy/nginx/,
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
-          strip_components: 3
+          strip_components: 2
       
       - name: Copy prod.env to EC2
         uses: appleboy/scp-action@master
