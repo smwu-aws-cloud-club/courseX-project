@@ -20,12 +20,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Create resources folder and add env file
-        run: |
-          mkdir -p courseX-backend/src/main/resources/env
-          echo "${{ secrets.PROD_ENV_FILE }}" > courseX-backend/src/main/resources/env/prod.env
-          echo "${{ secrets.TEST_ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
-
       - name: Build backend
         run: |
           cd courseX-backend
@@ -55,13 +49,11 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Configure deployment files
+      - name: Prepare deployment files
         run: |
           export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
           export IMAGE_TAG=${{ github.sha }}
-
           envsubst < courseX-backend/deploy/docker-compose.yml > courseX-backend/deploy/docker-compose.processed.yml
-          envsubst < courseX-backend/deploy/scripts/deploy.sh > courseX-backend/deploy/scripts/deploy.processed.sh
 
       - name: Copy deployment files to EC2
         uses: appleboy/scp-action@master
@@ -71,10 +63,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: |
             courseX-backend/deploy/docker-compose.processed.yml,
-            courseX-backend/deploy/scripts/deploy.processed.sh,
-            courseX-backend/deploy/nginx/
+            courseX-backend/deploy/deploy.sh,
+            courseX-backend/deploy/nginx/,
+            courseX-backend/deploy/.env
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
-          strip_components: 4
+          strip_components: 3
 
       - name: Deploy to Backend EC2
         uses: appleboy/ssh-action@master
@@ -85,11 +78,6 @@ jobs:
           script: |
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
             cd ~/coursex-deploy
-            mv docker-compose.processed.yml deploy/docker-compose.yml
-            mv deploy.processed.sh deploy/scripts/deploy.sh
-            chmod +x deploy/scripts/deploy.sh
-            echo "${{ secrets.PROD_ENV_FILE }}" > .env
-            export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
-            export IMAGE_TAG=${{ github.sha }}
-            ./deploy/scripts/deploy.sh
-            echo "${{ github.sha }}" > ~/previous-tag.txt
+            mv docker-compose.processed.yml docker-compose.yml
+            chmod +x deploy.sh
+            ./deploy.sh
