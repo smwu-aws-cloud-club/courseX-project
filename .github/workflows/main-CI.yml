@@ -66,7 +66,7 @@ jobs:
       - name: Create resources folder and add env file
         run: |
           mkdir -p courseX-backend/src/main/resources/env
-          echo "${{ secrets.ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
+          echo "${{ secrets.TEST_ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
 
       - name: Build backend
         run: |

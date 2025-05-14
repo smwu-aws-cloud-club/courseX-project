@@ -5,11 +5,11 @@ on:
     branches: ['main']
     paths:
       - 'courseX-backend/**'
-      - 'docker/**'
 
 jobs:
   deploy_backend:
     runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,17 +24,7 @@ jobs:
         run: |
           mkdir -p courseX-backend/src/main/resources/env
           echo "${{ secrets.PROD_ENV_FILE }}" > courseX-backend/src/main/resources/env/prod.env
-
-      - name: Create test env file
-        run: |
-          mkdir -p courseX-backend/src/test/resources/env
-          echo "ACTUATOR_PATH=/course-x-actuator" > courseX-backend/src/test/resources/env/test.env
-          echo "DB_URL=jdbc:h2:mem:testdb" >> courseX-backend/src/test/resources/env/test.env
-          echo "DB_USERNAME=sa" >> courseX-backend/src/test/resources/env/test.env
-          echo "DB_PASSWORD=" >> courseX-backend/src/test/resources/env/test.env
-          echo "DB_DRIVER_CLASS=org.h2.Driver" >> courseX-backend/src/test/resources/env/test.env
-          echo "JPA_DATABASE_DIALECT=org.hibernate.dialect.H2Dialect" >> courseX-backend/src/test/resources/env/test.env
-          echo "SPRING_PROFILES_ACTIVE=test" >> courseX-backend/src/test/resources/env/test.env
+          echo "${{ secrets.TEST_ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
 
       - name: Build backend
         run: |
@@ -69,9 +59,9 @@ jobs:
         run: |
           export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
           export IMAGE_TAG=${{ github.sha }}
-          export PREVIOUS_TAG=$(curl -s ${{ secrets.PREVIOUS_TAG_URL }} || echo "latest")
-          envsubst < docker/docker-compose.yml > docker/docker-compose.processed.yml
-          envsubst < docker/scripts/deploy.sh > docker/scripts/deploy.processed.sh
+
+          envsubst < courseX-backend/deploy/docker-compose.yml > courseX-backend/deploy/docker-compose.processed.yml
+          envsubst < courseX-backend/deploy/scripts/deploy.sh > courseX-backend/deploy/scripts/deploy.processed.sh
 
       - name: Copy deployment files to EC2
         uses: appleboy/scp-action@master
@@ -79,9 +69,12 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker/docker-compose.processed.yml,docker/scripts/deploy.processed.sh,docker/nginx/"
+          source: |
+            courseX-backend/deploy/docker-compose.processed.yml,
+            courseX-backend/deploy/scripts/deploy.processed.sh,
+            courseX-backend/deploy/nginx/
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
-          strip_components: 1
+          strip_components: 4
 
       - name: Deploy to Backend EC2
         uses: appleboy/ssh-action@master
@@ -92,11 +85,11 @@ jobs:
           script: |
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
             cd ~/coursex-deploy
-            mv docker-compose.processed.yml docker-compose.yml
-            mv deploy.processed.sh deploy.sh
-            chmod +x deploy.sh
+            mv docker-compose.processed.yml deploy/docker-compose.yml
+            mv deploy.processed.sh deploy/scripts/deploy.sh
+            chmod +x deploy/scripts/deploy.sh
             echo "${{ secrets.PROD_ENV_FILE }}" > .env
             export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
             export IMAGE_TAG=${{ github.sha }}
-            ./deploy.sh
+            ./deploy/scripts/deploy.sh
             echo "${{ github.sha }}" > ~/previous-tag.txt
