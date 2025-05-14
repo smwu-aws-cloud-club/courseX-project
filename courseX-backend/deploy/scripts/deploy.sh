@@ -37,7 +37,7 @@ docker-compose up -d --no-deps $TARGET_SERVICE
 
 echo "헬스 체크 시작..."
 for i in {1..10}; do
-  echo "시도 $i/10..."
+  echo "try $i/10..."
   sleep 3
 
   CONTAINER_STATUS=$(docker inspect --format="{{.State.Running}}" coursex-$TARGET_SERVICE 2>/dev/null)
