@@ -19,6 +19,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      
+      - name: Create resources folder and add env file
+        run: |
+          mkdir -p courseX-backend/src/main/resources/env
+          echo "${{ secrets.TEST_ENV_FILE }}" > courseX-backend/src/main/resources/env/test.env
+          echo "${{ secrets.PROD_ENV_FILE }}" > courseX-backend/src/main/resources/env/prod.env
 
       - name: Build backend
         run: |
@@ -65,7 +71,7 @@ jobs:
             courseX-backend/deploy/docker-compose.processed.yml,
             courseX-backend/deploy/deploy.sh,
             courseX-backend/deploy/nginx/,
-            courseX-backend/deploy/.env
+            courseX-backend/src/main/resources/env/prod.env
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
           strip_components: 3
 
@@ -79,5 +85,6 @@ jobs:
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
             cd ~/coursex-deploy
             mv docker-compose.processed.yml docker-compose.yml
+            mv prod.env .env
             chmod +x deploy.sh
             ./deploy.sh
