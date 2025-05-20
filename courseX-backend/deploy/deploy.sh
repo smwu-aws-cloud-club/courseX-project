@@ -43,7 +43,7 @@ for i in {1..10}; do
   CONTAINER_STATUS=$(docker inspect --format="{{.State.Running}}" coursex-$TARGET_SERVICE 2>/dev/null)
 
   if [ "$CONTAINER_STATUS" == "true" ]; then
-    HEALTH_CHECK=$(curl -s -o /dev/null -w "%{http_code}" http://$TARGET_SERVICE:8080$HEALTH_ENDPOINT 2>/dev/null)
+    HEALTH_CHECK=$(docker exec coursex-$TARGET_SERVICE curl -s -o /dev/null -w "%{http_code}" http://localhost:8080$HEALTH_ENDPOINT 2>/dev/null)
 
     if [ "$HEALTH_CHECK" == "200" ]; then
       echo "새 서비스 정상 작동 확인. Nginx 설정 변경 중..."
