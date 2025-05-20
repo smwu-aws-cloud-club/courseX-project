@@ -12,5 +12,3 @@ spring:
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
   jpa:
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM}
-
-ACTUATOR_PATH: /course-x-actuator
