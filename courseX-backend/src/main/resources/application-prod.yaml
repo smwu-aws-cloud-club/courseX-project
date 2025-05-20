@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+
+management:
+  endpoints:
+    web:
+      base-path: /course-x-actuator
+
+  endpoint:
+    health:
+      show-details: always
