@@ -9,6 +9,7 @@ import Button from 'components/button';
 import style from './EnrollPage.module.css';
 
 function Row({
+  courseId,
   code,
   name,
   credit,
@@ -18,7 +19,7 @@ function Row({
   remainingSeats,
 }) {
   const enroll = useMutation({
-    mutationFn: (code) => enrollApi(code),
+    mutationFn: (id) => enrollApi(id),
     onSuccess: (message) => {
       alert(message);
     },
@@ -42,7 +43,10 @@ function Row({
       <div className={style.cell}>{maxStudent}</div>
       <div className={style.cell}>{remainingSeats}</div>
       <div className={style.cell}>
-        <Button onClick={() => enroll.mutate(code)} disabled={enroll.isPending}>
+        <Button
+          onClick={() => enroll.mutate(courseId)}
+          disabled={enroll.isPending}
+        >
           {enroll.isPending ? '...' : '신청'}
         </Button>
       </div>
@@ -60,6 +64,8 @@ export default function EnrollPage() {
     staleTime: Infinity,
     cacheTime: Infinity,
   });
+
+  console.log(courses);
 
   return (
     <section className={style.container}>
