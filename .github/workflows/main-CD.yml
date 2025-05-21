@@ -19,7 +19,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      
+
       - name: Create resources folder and add env file
         run: |
           mkdir -p courseX-backend/src/main/resources/env
@@ -49,7 +49,7 @@ jobs:
           ECR_REPOSITORY: coursex-backend
         run: |
           cd courseX-backend
-          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Prepare deployment files
@@ -69,7 +69,7 @@ jobs:
             courseX-backend/deploy/nginx/,
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
           strip_components: 2
-      
+
       - name: Copy prod.env to EC2
         uses: appleboy/scp-action@master
         with:
