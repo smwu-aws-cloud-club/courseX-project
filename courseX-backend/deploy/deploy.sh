@@ -1,8 +1,7 @@
 #!/bin/bash
 
-if [ -z "$ECR_REGISTRY" ] || [ -z "$IMAGE_TAG" ]; then
-  echo "환경 변수가 올바르게 설정되지 않았습니다."
-  echo "ECR_REGISTRY와 IMAGE_TAG가 필요합니다."
+if [ -z "$ECR_REGISTRY" ]; then
+  echo "ECR_REGISTRY 환경 변수가 설정되지 않았습니다."
   exit 1
 fi
 
@@ -31,7 +30,7 @@ echo "현재 활성 서비스: $ACTIVE_SERVICE, 배포 대상: $TARGET_SERVICE"
 echo "Actuator 경로: $ACTUATOR_PATH"
 echo "헬스체크 엔드포인트: http://$TARGET_SERVICE:8080$HEALTH_ENDPOINT"
 
-docker pull $ECR_REGISTRY/coursex-backend:$IMAGE_TAG
+docker pull $ECR_REGISTRY/coursex-backend:latest
 
 docker-compose up -d --no-deps $TARGET_SERVICE
 

@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend-blue:
-    image: ${ECR_REGISTRY}/coursex-backend:${IMAGE_TAG:-latest}
+    image: ${ECR_REGISTRY}/coursex-backend:latest
     container_name: coursex-backend-blue
     restart: always
     expose:
@@ -15,7 +15,7 @@ services:
       - ./logs:/app/logs-blue
 
   backend-green:
-    image: ${ECR_REGISTRY}/coursex-backend:${PREVIOUS_TAG:-latest}
+    image: ${ECR_REGISTRY}/coursex-backend:latest
     container_name: coursex-backend-green
     restart: always
     expose:

@@ -47,18 +47,14 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: coursex-backend
-          IMAGE_TAG: ${{ github.sha }}
         run: |
           cd courseX-backend
-          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Prepare deployment files
         run: |
           export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
-          export IMAGE_TAG=${{ github.sha }}
           envsubst < courseX-backend/deploy/docker-compose.yml > courseX-backend/deploy/docker-compose.processed.yml
 
       - name: Copy deployment files to EC2
@@ -96,6 +92,5 @@ jobs:
             mv docker-compose.processed.yml docker-compose.yml
             mv prod.env .env
             export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
-            export IMAGE_TAG=${{ github.sha }}
             chmod +x deploy.sh
             ./deploy.sh
