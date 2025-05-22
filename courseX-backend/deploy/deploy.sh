@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -e  # 명시적 실패 이외에는 중단하지 않음
 
 NGINX_CONFIG_PATH="/etc/nginx/conf.d"
 ACTUATOR_PATH=${ACTUATOR_PATH:-"/actuator"}
@@ -34,18 +34,22 @@ echo "> $GREEN_SERVICE 실행 시작"
 docker-compose up -d --no-deps $GREEN_SERVICE
 
 # === 1차 헬스 체크: 직접 포트로 확인 (프록시 전환 전) ===
-echo "> ${GREEN_PORT} 헬스 체크 시작 (Nginx 전환 전)"
+echo "> ${GREEN_PORT} 포트 헬스 체크 시작 (Nginx 전환 전)"
 for i in {1..10}; do
   sleep 2
-  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${GREEN_PORT}${HEALTH_ENDPOINT})
+  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${GREEN_PORT}${HEALTH_ENDPOINT} || true)
+
   if [ "$STATUS" == "200" ]; then
     echo "> ✅ 헬스 체크 통과 (직접 접근)"
     break
+  elif [ -z "$STATUS" ]; then
+    echo "> ❌ 응답 없음 (curl 실패)"
   else
     echo "> 응답 상태 코드: $STATUS"
   fi
+
   if [ "$i" -eq 10 ]; then
-    echo "> ❌ 헬스 체크 실패. 롤백 진행..."
+    echo "> ❌ 헬스 체크 실패. 롤백 수행..."
     docker-compose stop $GREEN_SERVICE
     docker-compose rm -f $GREEN_SERVICE
     exit 1
@@ -56,13 +60,13 @@ done
 echo "------------------------------------------------------------"
 echo "> Nginx 프록시 전환: ${GREEN_PORT} 포트로"
 echo "proxy_pass http://localhost:${GREEN_PORT};" | sudo tee ${NGINX_CONFIG_PATH}/service-url.inc > /dev/null
-sudo nginx -s reload
+sudo nginx -t && sudo nginx -s reload
 
 # === 2차 헬스 체크: Nginx 경유 접근 확인 ===
-echo "> Nginx 경유 헬스 체크 중..."
+echo "> Nginx 프록시 경유 헬스 체크 중..."
 sleep 2
-response=$(curl -s http://localhost${HEALTH_ENDPOINT})
-up_count=$(echo "$response" | grep 'UP' | wc -l)
+response=$(curl -s http://localhost${HEALTH_ENDPOINT} || true)
+up_count=$(echo "$response" | grep -o '"status":"UP"' | wc -l)
 
 if [ "$up_count" -ge 1 ]; then
   echo "> 🎉 프록시 전환 성공 및 Nginx 접근 정상"
