@@ -1,70 +1,83 @@
 #!/bin/bash
 
-if [ -z "$ECR_REGISTRY" ]; then
-  echo "ECR_REGISTRY 환경 변수가 설정되지 않았습니다."
-  exit 1
-fi
+set -e
 
-if [ -f .env ]; then
-  ACTUATOR_PATH_VALUE=$(grep -m 1 "ACTUATOR_PATH=" .env | cut -d '=' -f2)
-  if [ -n "$ACTUATOR_PATH_VALUE" ]; then
-    ACTUATOR_PATH=$ACTUATOR_PATH_VALUE
-  else
-    ACTUATOR_PATH="/actuator"
-  fi
-else
-  ACTUATOR_PATH="/actuator"
-fi
-
+NGINX_CONFIG_PATH="/etc/nginx/conf.d"
+ACTUATOR_PATH=${ACTUATOR_PATH:-"/actuator"}
 HEALTH_ENDPOINT="${ACTUATOR_PATH}/health"
 
-ACTIVE_SERVICE=$(grep -o 'backend-[a-z]*' nginx/conf.d/default.conf | head -1)
-
-if [ "$ACTIVE_SERVICE" == "backend-blue" ]; then
-  TARGET_SERVICE="backend-green"
+if grep -q "8081" "${NGINX_CONFIG_PATH}/service-url.inc"; then
+  BLUE_PORT="8081"
+  BLUE_SERVICE="backend-blue"
+  GREEN_PORT="8082"
+  GREEN_SERVICE="backend-green"
 else
-  TARGET_SERVICE="backend-blue"
+  BLUE_PORT="8082"
+  BLUE_SERVICE="backend-green"
+  GREEN_PORT="8081"
+  GREEN_SERVICE="backend-blue"
 fi
 
-echo "현재 활성 서비스: $ACTIVE_SERVICE, 배포 대상: $TARGET_SERVICE"
-echo "Actuator 경로: $ACTUATOR_PATH"
-echo "헬스체크 엔드포인트: http://$TARGET_SERVICE:8080$HEALTH_ENDPOINT"
+echo "------------------------------------------------------------"
+echo "> 현재 활성 서비스: $BLUE_SERVICE ($BLUE_PORT)"
+echo "> 배포 대상 서비스: $GREEN_SERVICE ($GREEN_PORT)"
+echo "> ACTUATOR_PATH: $ACTUATOR_PATH"
+echo "> HEALTH_ENDPOINT: $HEALTH_ENDPOINT"
+echo "------------------------------------------------------------"
 
-docker pull $ECR_REGISTRY/coursex-backend:latest
+# === 이미지 Pull (필요 시) ===
+echo "> 도커 이미지 Pull (선택 사항)"
+docker-compose pull $GREEN_SERVICE
 
-docker-compose up -d --no-deps $TARGET_SERVICE
+# === 새 서비스 컨테이너 실행 ===
+echo "> $GREEN_SERVICE 실행 시작"
+docker-compose up -d --no-deps $GREEN_SERVICE
 
-echo "헬스 체크 시작..."
+# === 1차 헬스 체크: 직접 포트로 확인 (프록시 전환 전) ===
+echo "> ${GREEN_PORT} 헬스 체크 시작 (Nginx 전환 전)"
 for i in {1..10}; do
-  echo "시도 $i/10..."
-  sleep 3
-
-  CONTAINER_STATUS=$(docker inspect --format="{{.State.Running}}" coursex-$TARGET_SERVICE 2>/dev/null)
-
-  if [ "$CONTAINER_STATUS" == "true" ]; then
-    CONTAINER_IP=$(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" coursex-$TARGET_SERVICE)
-    HEALTH_CHECK=$(curl -s -o /dev/null -w "%{http_code}" http://${CONTAINER_IP}:8080${HEALTH_ENDPOINT} 2>/dev/null)
-
-    if [ "$HEALTH_CHECK" == "200" ]; then
-      echo "새 서비스 정상 작동 확인. Nginx 설정 변경 중..."
-
-      sed -i "s/$ACTIVE_SERVICE/$TARGET_SERVICE/g" nginx/conf.d/default.conf
-      docker exec coursex-nginx nginx -s reload
-
-      echo "트래픽이 $TARGET_SERVICE로 전환되었습니다."
-      echo "이전 서비스($ACTIVE_SERVICE) 중지 및 정리 중..."
-      docker-compose stop $ACTIVE_SERVICE
-      docker-compose rm -f $ACTIVE_SERVICE
-      docker image prune -a
-
-      exit 0
-    else
-      echo "헬스 체크 실패: 상태 코드 $HEALTH_CHECK"
-    fi
+  sleep 2
+  STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${GREEN_PORT}${HEALTH_ENDPOINT})
+  if [ "$STATUS" == "200" ]; then
+    echo "> ✅ 헬스 체크 통과 (직접 접근)"
+    break
   else
-    echo "컨테이너가 실행 중이지 않습니다."
+    echo "> 응답 상태 코드: $STATUS"
+  fi
+  if [ "$i" -eq 10 ]; then
+    echo "> ❌ 헬스 체크 실패. 롤백 진행..."
+    docker-compose stop $GREEN_SERVICE
+    docker-compose rm -f $GREEN_SERVICE
+    exit 1
   fi
 done
 
-echo "새 서비스 상태 확인에 실패했습니다. 배포를 중단합니다."
-exit 1
+# === 프록시 전환 ===
+echo "------------------------------------------------------------"
+echo "> Nginx 프록시 전환: ${GREEN_PORT} 포트로"
+echo "proxy_pass http://localhost:${GREEN_PORT};" | sudo tee ${NGINX_CONFIG_PATH}/service-url.inc > /dev/null
+sudo nginx -s reload
+
+# === 2차 헬스 체크: Nginx 경유 접근 확인 ===
+echo "> Nginx 경유 헬스 체크 중..."
+sleep 2
+response=$(curl -s http://localhost${HEALTH_ENDPOINT})
+up_count=$(echo "$response" | grep 'UP' | wc -l)
+
+if [ "$up_count" -ge 1 ]; then
+  echo "> 🎉 프록시 전환 성공 및 Nginx 접근 정상"
+else
+  echo "> ❌ 프록시된 서비스 접근 실패"
+  echo "> 응답 내용: $response"
+  exit 1
+fi
+
+# === 이전 서비스 종료 및 정리 ===
+echo "------------------------------------------------------------"
+echo "> 이전 서비스 $BLUE_SERVICE 중단 및 제거"
+docker-compose stop $BLUE_SERVICE
+docker-compose rm -f $BLUE_SERVICE
+docker image prune -a -f
+
+echo "------------------------------------------------------------"
+echo "> 🚀 배포 완료: 현재 활성 서비스 → $GREEN_SERVICE"
