@@ -66,7 +66,6 @@ jobs:
           source: |
             courseX-backend/deploy/docker-compose.processed.yml,
             courseX-backend/deploy/deploy.sh,
-            courseX-backend/deploy/nginx/,
           target: "/home/${{ secrets.EC2_USER }}/coursex-deploy"
           strip_components: 2
 
