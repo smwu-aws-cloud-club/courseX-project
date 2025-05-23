@@ -30,7 +30,7 @@ export const options = {
       maxVUs: 460,
       stages: [
         { target: 0, duration: '30s' }, // 워밍업: 0 RPS
-        { target: 150, duration: '1s' }, // 스파이크: 0→150 RPS
+        { target: 150, duration: '10s' }, // 스파이크: 0→150 RPS
         { target: 150, duration: '3m' }, // 스파이크 유지: 3분
         { target: 0, duration: '30s' }, // 램프다운: 0 RPS
       ],
