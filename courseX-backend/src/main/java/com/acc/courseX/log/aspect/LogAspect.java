@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.acc.courseX.course.entity.Course;
 import com.acc.courseX.course.repository.CourseRepository;
-import com.acc.courseX.enrollment.repository.EnrollmentRepository;
 import com.acc.courseX.log.entity.LogAction;
 import com.acc.courseX.log.service.LogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,9 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -31,10 +27,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class LogAspect {
   private final LogService logService;
   private final ObjectMapper objectMapper;
-  private final EnrollmentRepository enrollmentRepository;
   private final CourseRepository courseRepository;
 
-  @AfterReturning("execution(* com.acc.courseX.course.controller.CourseController.getCourses(..))")
+  // @AfterReturning("execution(*
+  // com.acc.courseX.course.controller.CourseController.getCourses(..))")
   public void logAfterViewCourse(JoinPoint joinPoint) {
     String courseCode = (String) joinPoint.getArgs()[0];
     Long userId = extractUserIdOrDefault(0L);
@@ -42,7 +38,7 @@ public class LogAspect {
     logAction(userId, LogAction.VIEW_COURSE, "courses", null, metadata);
   }
 
-  @AfterReturning("execution(* com.acc.courseX.course.controller.CourseController.enroll(..))")
+  // @AfterReturning("execution(* com.acc.courseX.course.controller.CourseController.enroll(..))")
   public void logAfterEnrollment(JoinPoint joinPoint) {
     Long courseId = (Long) joinPoint.getArgs()[0];
     Long userId = (Long) joinPoint.getArgs()[1];
@@ -57,9 +53,9 @@ public class LogAspect {
     logAction(userId, LogAction.ENROLL_COURSE, "enrollments", courseId, metadata);
   }
 
-  @AfterThrowing(
-      pointcut = "execution(* com.acc.courseX.course.controller.CourseController.enroll(..))",
-      throwing = "exception")
+  //  @AfterThrowing(
+  //      pointcut = "execution(* com.acc.courseX.course.controller.CourseController.enroll(..))",
+  //      throwing = "exception")
   public void logAfterEnrollmentFailure(JoinPoint joinPoint, Exception exception) {
     Long courseId = (Long) joinPoint.getArgs()[0];
     Long userId = (Long) joinPoint.getArgs()[1];
@@ -68,8 +64,8 @@ public class LogAspect {
     logAction(userId, LogAction.ENROLL_COURSE_FAILURE, "courses", courseId, metadata);
   }
 
-  @AfterReturning(
-      "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))")
+  //  @AfterReturning(
+  //      "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))")
   public void logAfterCancelEnrollment(JoinPoint joinPoint) {
     Long enrollmentId = (Long) joinPoint.getArgs()[0];
     Long userId = (Long) joinPoint.getArgs()[1];
@@ -79,10 +75,10 @@ public class LogAspect {
     logAction(userId, LogAction.DROP_COURSE, "enrollments", enrollmentId, metadata);
   }
 
-  @AfterThrowing(
-      pointcut =
-          "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))",
-      throwing = "exception")
+  //  @AfterThrowing(
+  //      pointcut =
+  //          "execution(* com.acc.courseX.enrollment.controller.EnrollmentController.cancel(..))",
+  //      throwing = "exception")
   public void logAfterCancelEnrollmentFailure(JoinPoint joinPoint, Exception exception) {
     Long enrollmentId = (Long) joinPoint.getArgs()[0];
     Long userId = (Long) joinPoint.getArgs()[1];
@@ -91,7 +87,7 @@ public class LogAspect {
     logAction(userId, LogAction.DROP_COURSE_FAILURE, "enrollments", enrollmentId, metadata);
   }
 
-  @Around("execution(* com.acc.courseX.log.service.LogService.*(..))")
+  //  @Around("execution(* com.acc.courseX.log.service.LogService.*(..))")
   public Object measureLogServiceExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
     long startTime = System.currentTimeMillis();
     Object result = joinPoint.proceed(); // 메서드 실행

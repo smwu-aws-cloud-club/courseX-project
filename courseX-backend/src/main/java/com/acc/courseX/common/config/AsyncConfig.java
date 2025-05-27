@@ -1,4 +1,4 @@
-package com.acc.courseX.config;
+package com.acc.courseX.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
