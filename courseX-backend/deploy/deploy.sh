@@ -34,9 +34,10 @@ echo "> $GREEN_SERVICE 실행 시작"
 docker-compose up -d --no-deps $GREEN_SERVICE
 
 # === 1차 헬스 체크: 직접 포트로 확인 (프록시 전환 전) ===
+sleep 10
 echo "> ${GREEN_PORT} 포트 헬스 체크 시작 (Nginx 전환 전)"
 for i in {1..10}; do
-  sleep 2
+  sleep 3
   STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${GREEN_PORT}${HEALTH_ENDPOINT} || true)
 
   if [ "$STATUS" == "200" ]; then
