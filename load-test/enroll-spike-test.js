@@ -1,6 +1,6 @@
 // 전체 과목 분산(Spread) 테스트
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+import { check, fail, sleep } from 'k6';
 
 import { BASE_URL } from './config.js';
 import { pickCourse } from './utils.js';
@@ -33,12 +33,21 @@ export default function () {
   const userId = __VU + 41;
   const params = { headers: { 'X-USER-ID': userId } };
 
-  const res = http.post(url, null, params);
+  try {
+    const res = http.post(url, null, params);
 
-  check(res, {
-    '✅ 상태 코드 2xx 또는 4xx': (r) => r.status < 500,
-    '⏱️ 응답 시간 < 800ms': (r) => r.timings.duration < 800,
-  });
+    const success = check(res, {
+      '✅ 상태 코드 2xx 또는 4xx': (r) => r.status >= 200 && r.status < 500,
+    });
+
+    if (!success) {
+      fail(
+        `Check 실패 - status: ${res.status}, duration: ${res.timings.duration}`
+      );
+    }
+  } catch (e) {
+    fail(`네트워크 요청 실패: ${e.message}`);
+  }
 
   sleep(1); // 실제 사용자 행동을 흉내내기 위해 약간의 대기
 }

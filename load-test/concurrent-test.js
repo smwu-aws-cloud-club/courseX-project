@@ -1,6 +1,6 @@
 // 특정 과목 집중(Hotspot) 테스트
 import http from 'k6/http';
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import { Counter } from 'k6/metrics';
 
 import { BASE_URL } from './config.js';
@@ -40,13 +40,21 @@ export default function () {
   const userId = users[__VU];
   const params = { headers: { 'X-USER-ID': userId } };
 
-  const res = http.post(url, null, params);
+  try {
+    const res = http.post(url, null, params);
 
-  const isSuccess = check(res, {
-    '신청 성공 (201)': (r) => r.status === 201,
-  });
+    const success = check(res, {
+      '✅ 신청 성공': (r) => r.status === 201,
+    });
 
-  if (isSuccess) {
-    successCounter.add(1);
+    if (success) {
+      successCounter.add(1);
+    } else {
+      fail(
+        `Check 실패 - status: ${res.status}, duration: ${res.timings.duration}`
+      );
+    }
+  } catch (e) {
+    fail(`네트워크 요청 실패: ${e.message}`);
   }
 }

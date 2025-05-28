@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+import { check, fail, sleep } from 'k6';
 
 import { BASE_URL } from './config.js';
 import { pickCourse } from './utils.js';
@@ -48,9 +48,21 @@ export const options = {
 export function allList() {
   const url = `${BASE_URL}/courses`;
 
-  const res = http.get(url);
+  try {
+    const res = http.get(url);
 
-  check(res, { '✅ 전체 조회 200 OK': (r) => r.status === 200 });
+    const success = check(res, {
+      '✅ 전체 조회 200 OK': (r) => r.status === 200,
+    });
+
+    if (!success) {
+      fail(
+        `Check 실패 - status: ${res.status}, duration: ${res.timings.duration}`
+      );
+    }
+  } catch (e) {
+    fail(`네트워크 요청 실패: ${e.message}`);
+  }
 
   sleep(1); // 실제 사용자 행동을 흉내내기 위해 약간의 대기
 }
@@ -59,9 +71,21 @@ export function searchCourse() {
   const courseId = pickCourse();
   const url = `${BASE_URL}/courses?code=${courseId}`;
 
-  const res = http.get(url);
+  try {
+    const res = http.get(url);
 
-  check(res, { '✅ 개별 조회 200 OK': (r) => r.status === 200 });
+    const success = check(res, {
+      '✅ 개별 조회 200 OK': (r) => r.status === 200,
+    });
+
+    if (!success) {
+      fail(
+        `Check 실패 - status: ${res.status}, duration: ${res.timings.duration}`
+      );
+    }
+  } catch (e) {
+    fail(`네트워크 요청 실패: ${e.message}`);
+  }
 
   sleep(1); // 실제 사용자 행동을 흉내내기 위해 약간의 대기
 }
