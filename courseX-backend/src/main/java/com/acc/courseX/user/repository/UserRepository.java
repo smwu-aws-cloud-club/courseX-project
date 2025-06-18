@@ -20,10 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("SELECT u FROM User u WHERE u.id = :id")
   Optional<User> findByIdForUpdate(@Param("id") Long id);
 
-  default User findByIdOrThrow(Long userId) {
-    return findById(userId).orElseThrow(() -> new UserException(NOT_FOUND_USER));
-  }
-
   default User findByIdForUpdateOrThrow(Long userId) {
     return findByIdForUpdate(userId).orElseThrow(() -> new UserException(NOT_FOUND_USER));
   }

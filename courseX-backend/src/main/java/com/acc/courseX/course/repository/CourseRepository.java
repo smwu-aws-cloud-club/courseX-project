@@ -36,10 +36,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
   @Query("SELECT c FROM Course c WHERE c.id = :id")
   Optional<Course> findByIdForUpdate(@Param("id") Long id);
 
-  default Course findByIdOrThrow(Long courseId) {
-    return findById(courseId).orElseThrow(() -> new CourseException(NOT_FOUND_COURSE));
-  }
-
   default Course findByIdForUpdateOrThrow(Long courseId) {
     return findByIdForUpdate(courseId).orElseThrow(() -> new CourseException(NOT_FOUND_COURSE));
   }
