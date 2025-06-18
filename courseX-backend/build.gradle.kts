@@ -25,6 +25,7 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	runtimeOnly("com.mysql:mysql-connector-j")
+	runtimeOnly("com.h2database:h2")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("io.micrometer:micrometer-registry-prometheus")

@@ -14,6 +14,8 @@ import org.springframework.data.repository.query.Param;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
   boolean existsByCourseAndUserAndStatus(Course course, User user, EnrollmentStatus status);
 
+  long countByCourseAndStatus(Course course, EnrollmentStatus status);
+
   @Query(
       "SELECT DISTINCT e "
           + "FROM Enrollment e "
