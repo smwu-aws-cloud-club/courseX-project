@@ -20,4 +20,20 @@ public class Major {
 
   @Column(nullable = false)
   private String name;
+
+  public String getName() {
+    return name;
+  }
+
+  public static Major createTestMajor(String name) {
+    Major major = new Major();
+    try {
+      java.lang.reflect.Field nameField = Major.class.getDeclaredField("name");
+      nameField.setAccessible(true);
+      nameField.set(major, name);
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to create test major", e);
+    }
+    return major;
+  }
 }
